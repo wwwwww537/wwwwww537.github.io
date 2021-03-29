@@ -5,7 +5,10 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta:{
+      title: '涛仔的镜花水月'
+  }
   },
   {
     path: '/about',
