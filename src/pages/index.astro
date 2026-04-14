@@ -1,11 +1,34 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="欢迎来到我的主页">
+	<main>
+		<section class="mb-16">
+			<h1 class="text-4xl font-bold mb-4">你好，我是[你的名字] 👋</h1>
+			<p class="text-lg text-gray-600 mb-8 leading-relaxed" style="color: var(--text-muted)">
+				一名前端开发者 / 设计爱好者。这里记录我的技术探索、生活随想以及正在折腾的有趣项目。
+			</p>
+			<a href="/blog" class="inline-block bg-gray-900 text-white px-6 py-3 font-medium hover:bg-gray-700 transition" style="border-radius: var(--radius-md);">
+				阅读我的文章
+			</a>
+		</section>
+
+		<section>
+			<h2 class="text-xl font-semibold mb-6">近期精选</h2>
+			<div class="grid gap-6">
+				<a href="#" class="smooth-card block no-underline text-inherit">
+					<h3 class="text-lg font-bold mb-2">2026年，为什么我选择 Astro？</h3>
+					<p class="text-sm" style="color: var(--text-muted)">探讨现代前端架构的极致性能体验，以及静态生成的魅力。</p>
+					<div class="mt-4 text-xs text-gray-400">2026-04-14 · 5 min read</div>
+				</a>
+				
+				<a href="#" class="smooth-card block no-underline text-inherit">
+					<h3 class="text-lg font-bold mb-2">如何设计一个具有“高级感”的界面</h3>
+					<p class="text-sm" style="color: var(--text-muted)">从留白、阴影到圆角处理，分享我的 UI 设计心得。</p>
+					<div class="mt-4 text-xs text-gray-400">2026-04-10 · 8 min read</div>
+				</a>
+			</div>
+		</section>
+	</main>
 </Layout>
