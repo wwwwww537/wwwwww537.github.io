@@ -1,0 +1,363 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>3D项目符号-jq22.com</title>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	cursor: default;
+	box-sizing: border-box;
+	
+}
+
+body {
+	font-size: .75rem;
+	background: hsl(0, 0%, 10%);
+}
+
+h1 {
+	position: relative;
+	font-weight: 400;
+	margin: 3em 2em;
+	color: hsla(30, 0%, 50%, .5);
+	-webkit-transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+	transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+	text-align: center;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+h1:hover {
+	color: hsla(30, 90%, 60%, 1);
+}
+
+.bullet {
+	/*[position the bullets]*/
+	position: absolute;
+	top: 0%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -200%);
+	        transform: translate(-50%, -200%);
+	/*[size the bullets]*/
+	width: 1rem;
+	height: 1rem;
+	-webkit-transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+	transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+	-webkit-perspective: 4.5rem;
+	        perspective: 4.5rem;
+	pointer-events: none;
+}
+
+.cube {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	-webkit-transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+	transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+	-webkit-transform-style: preserve-3d;
+	        transform-style: preserve-3d;
+}
+
+.back,
+.front,
+.left,
+.right,
+.top,
+.bottom {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	font-size: 2rem;
+	background: hsla(30, 0%, 0%, .65);
+	border: .15rem solid hsla(30, 90%, 60%, .5);
+	text-transform: uppercase;
+	-webkit-transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+	transition: .25s cubic-bezier(0.5, -0.5, 0.5, 1.5);
+}
+
+.back {
+	-webkit-transform: translateZ(-.5rem) rotateY(180deg);
+	        transform: translateZ(-.5rem) rotateY(180deg);
+}
+
+.front {
+	-webkit-transform: translateZ(.5rem);
+	        transform: translateZ(.5rem);
+}
+
+.left {
+	-webkit-transform: translateX(-.5rem) rotateY(-90deg);
+	        transform: translateX(-.5rem) rotateY(-90deg);
+}
+
+.right {
+	-webkit-transform: translateX(.5rem) rotateY(90deg);
+	        transform: translateX(.5rem) rotateY(90deg);
+}
+
+.top {
+	-webkit-transform: translateY(-.5rem) rotateX(90deg);
+	        transform: translateY(-.5rem) rotateX(90deg);
+}
+
+.bottom {
+	-webkit-transform: translateY(.5rem) rotateX(90deg);
+	        transform: translateY(.5rem) rotateX(90deg);
+}
+
+.x:hover .bullet,
+.y:hover .bullet,
+.z:hover .bullet {
+	width: 2rem;
+	height: 2rem;
+	-webkit-transform: translate(-50%, -150%);
+	        transform: translate(-50%, -150%);
+}
+
+.x.exp:hover .bullet,
+.y.exp:hover .bullet,
+.z.exp:hover .bullet {
+	width: 1.25rem;
+	height: 1.25rem;
+	-webkit-transform: translate(-50%, -200%);
+	        transform: translate(-50%, -200%);
+}
+
+.x:hover .cube,
+.y:hover .cube,
+.z:hover .cube {
+	-webkit-animation: spinXYZ 5s infinite linear;
+	        animation: spinXYZ 5s infinite linear;
+}
+
+.x:hover .cube div,
+.y:hover .cube div,
+.z:hover .cube div {
+	background: hsla(30, 90%, 60%, .25);
+}
+
+.x.exp:hover .cube div,
+.y.exp:hover .cube div,
+.z.exp:hover .cube div {
+	border-radius: 50%;
+}
+
+.exp:hover .back {
+	-webkit-transform: translateZ(-1rem) rotateY(180deg);
+	        transform: translateZ(-1rem) rotateY(180deg);
+}
+
+.exp:hover .front {
+	-webkit-transform: translateZ(1rem);
+	        transform: translateZ(1rem);
+}
+
+.exp:hover .left {
+	-webkit-transform: translateX(-1rem) rotateY(-90deg);
+	        transform: translateX(-1rem) rotateY(-90deg);
+}
+
+.exp:hover .right {
+	-webkit-transform: translateX(1rem) rotateY(90deg);
+	        transform: translateX(1rem) rotateY(90deg);
+}
+
+.exp:hover .top {
+	-webkit-transform: translateY(-1rem) rotateX(90deg);
+	        transform: translateY(-1rem) rotateX(90deg);
+}
+
+.exp:hover .bottom {
+	-webkit-transform: translateY(1rem) rotateX(90deg);
+	        transform: translateY(1rem) rotateX(90deg);
+}
+
+.x .cube {
+	-webkit-animation: spinX 5s infinite linear;
+	        animation: spinX 5s infinite linear;
+}
+
+.y .cube {
+	-webkit-animation: spinY 5s infinite linear;
+	        animation: spinY 5s infinite linear;
+}
+
+.z .cube {
+	-webkit-animation: spinZ 5s infinite linear;
+	        animation: spinZ 5s infinite linear;
+}
+
+@-webkit-keyframes spinXYZ {
+	from {
+		-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+		        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+	}
+	to {
+		-webkit-transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+		        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+	}
+}
+
+@keyframes spinXYZ {
+	from {
+		-webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+		        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+	}
+	to {
+		-webkit-transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+		        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+	}
+}
+
+@-webkit-keyframes spinX {
+	from {
+		-webkit-transform: rotateX(0deg);
+		        transform: rotateX(0deg);
+	}
+	to {
+		-webkit-transform: rotateX(360deg);
+		        transform: rotateX(360deg);
+	}
+}
+
+@keyframes spinX {
+	from {
+		-webkit-transform: rotateX(0deg);
+		        transform: rotateX(0deg);
+	}
+	to {
+		-webkit-transform: rotateX(360deg);
+		        transform: rotateX(360deg);
+	}
+}
+
+@-webkit-keyframes spinY {
+	from {
+		-webkit-transform: rotateY(0deg);
+		        transform: rotateY(0deg);
+	}
+	to {
+		-webkit-transform: rotateY(360deg);
+		        transform: rotateY(360deg);
+	}
+}
+
+@keyframes spinY {
+	from {
+		-webkit-transform: rotateY(0deg);
+		        transform: rotateY(0deg);
+	}
+	to {
+		-webkit-transform: rotateY(360deg);
+		        transform: rotateY(360deg);
+	}
+}
+
+@-webkit-keyframes spinZ {
+	from {
+		-webkit-transform: rotateZ(0deg);
+		        transform: rotateZ(0deg);
+	}
+	to {
+		-webkit-transform: rotateZ(360deg);
+		        transform: rotateZ(360deg);
+	}
+}
+
+@keyframes spinZ {
+	from {
+		-webkit-transform: rotateZ(0deg);
+		        transform: rotateZ(0deg);
+	}
+	to {
+		-webkit-transform: rotateZ(360deg);
+		        transform: rotateZ(360deg);
+	}
+}</style>
+</head>
+<body>
+<h1 class="x">
+<div class="bullet">
+	<div class="cube">
+		<div class="back"></div>
+		<div class="front"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+		<div class="top"></div>
+		<div class="bottom"></div>
+	</div>
+</div>list item x I</h1>
+<h1 class="y">
+<div class="bullet">
+	<div class="cube">
+		<div class="back"></div>
+		<div class="front"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+		<div class="top"></div>
+		<div class="bottom"></div>
+	</div>
+</div>list item y I</h1>
+<h1 class="z">
+<div class="bullet">
+	<div class="cube">
+		<div class="back"></div>
+		<div class="front"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+		<div class="top"></div>
+		<div class="bottom"></div>
+	</div>
+</div>list item z I</h1>
+<h1 class="x exp">
+<div class="bullet">
+	<div class="cube">
+		<div class="back"></div>
+		<div class="front"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+		<div class="top"></div>
+		<div class="bottom"></div>
+	</div>
+</div>list item x II</h1>
+<h1 class="y exp">
+<div class="bullet">
+	<div class="cube">
+		<div class="back"></div>
+		<div class="front"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+		<div class="top"></div>
+		<div class="bottom"></div>
+	</div>
+</div>list item y II</h1>
+<h1 class="z exp">
+<div class="bullet">
+	<div class="cube">
+		<div class="back"></div>
+		<div class="front"></div>
+		<div class="left"></div>
+		<div class="right"></div>
+		<div class="top"></div>
+		<div class="bottom"></div>
+	</div>
+</div>list item z II</h1>
+
+<script>
+</script>
+
+</body>
+</html>
