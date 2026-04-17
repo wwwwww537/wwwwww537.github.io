@@ -167,15 +167,7 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 		document.addEventListener('astro:before-swap', (e) => {
 			const waifu = document.getElementById('waifu');
 			if (waifu) {
-				// 在新页面中保留该节点
-				window.waifu = waifu;
-				//e.newDocument.body.appendChild(waifu);
-			}
-		});
-		document.addEventListener('astro:page-load', () => {
-			if (window.waifu) {
-				// 在新页面中保留该节点
-				document.body.appendChild(window.waifu);
+				e.newDocument.body.appendChild(waifu);
 			}
 		});
 	</script>
