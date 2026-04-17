@@ -1,23 +1,102 @@
 ---
-// src/pages/[lang]/index.astro
 import Layout from '../../layouts/Layout.astro';
 import { useTranslations } from '../../i18n/utils';
-
-export function getStaticPaths() {
-  return [
-    { params: { lang: 'zh' } },
-    { params: { lang: 'en' } }
-  ];
-}
-
-// 接下来正常获取 lang 变量并执行你的逻辑
 const { lang } = Astro.params;
 const t = useTranslations(lang as 'zh' | 'en');
 ---
 
-<Layout title={`${t('nav.home')} - 科技博客`} lang={lang as 'zh' | 'en'}>
-	<div class="tech-container">
-		<h1 transition:name="hero-title">{t('hero.title')}</h1>
-		<p>{t('hero.desc')}</p>
-	</div>
+<Layout title="Personal Terminal" lang={lang as 'zh' | 'en'}>
+  <div class="tech-container">
+    <div class="terminal-layout">
+      <main class="resume-main">
+        <header class="bio-header">
+          <h1 class="glitch-text" transition:name="hero-title">Wwwwww537</h1>
+          <p class="role-title">Software Engineer</p>
+          <div class="bio-tags">
+            <span>📍 NingBo, China</span>
+            <span>📧 wut15471@gmail.com</span>
+            <span>🔗 <a href="https://github.com/wwwwww537">github/wwwwww537</a></span>
+          </div>
+        </header>
+
+        <section class="content-section">
+          <h3>// About Me</h3>
+          <p>这里是你的个人简介。主页现在保持简洁，重点在于你的个人品牌和核心信息。你可以通过侧边栏快速访问其他模块。</p>
+        </section>
+
+        <section class="content-section">
+          <h3>// Core Stack</h3>
+          <div class="skill-grid">
+            <div class="skill-item">Frontend: Astro, React, Tailwind</div>
+            <div class="skill-item">Backend: .NET Core, MES, Node.js</div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="sidebar-aside">
+        <section class="cyber-card mini-card">
+          <h4>📅 计划安排</h4>
+          <ul class="mini-list">
+            <li>5/1 户外徒步活动</li>
+            <li>每周二 代码审计</li>
+          </ul>
+        </section>
+
+        <section class="cyber-card mini-card">
+          <h4>🧩 常用跳转</h4>
+          <div class="mini-tags">
+            <a href="#">NAS</a> <a href="#">GitHub</a> <a href="#">V2EX</a>
+          </div>
+        </section>
+
+        <section class="cyber-card mini-card">
+          <h4>🧾 活动账单</h4>
+          <p class="text-xs text-secondary">近期桌游局发票已上传</p>
+          <a href="#" class="btn-link">进入结算系统 &rarr;</a>
+        </section>
+      </aside>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .terminal-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px; /* 主正文宽，侧边栏固定 */
+    gap: 3rem;
+    padding-top: 2rem;
+  }
+
+  /* 简历风格正文 */
+  .resume-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .bio-header h1 { font-size: 3.5rem; margin: 0; color: var(--accent-color); }
+  .role-title { font-size: 1.2rem; color: var(--text-secondary); margin-top: 0.5rem; }
+  .bio-tags { display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); }
+
+  .content-section h3 {
+    border-bottom: 2px solid var(--accent-color);
+    width: fit-content;
+    padding-right: 2rem;
+    margin-bottom: 1rem;
+    font-family: monospace;
+  }
+
+  /* 侧边栏卡片微调：作为辅助补充 */
+  .sidebar-aside { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mini-card { padding: 1.2rem; }
+  .mini-card h4 { margin: 0 0 0.8rem 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+  
+  .mini-list { list-style: none; padding: 0; font-size: 0.85rem; }
+  .mini-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .mini-tags a { font-size: 0.75rem; padding: 2px 8px; border: 1px solid var(--border-color); border-radius: 4px; text-decoration: none; color: var(--text-primary); }
+
+  @media (max-width: 900px) {
+    .terminal-layout { grid-template-columns: 1fr; }
+    .sidebar-aside { order: 2; }
+  }
+</style>

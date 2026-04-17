@@ -34,12 +34,12 @@
   .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: 1px solid var(--border-color); color: var(--text-secondary); border-radius: 4px; cursor: pointer; padding: 2px 8px; font-size: 0.8rem; }
   .close-btn:hover { border-color: var(--accent-color); color: var(--accent-color); }
 
-  /* 深度定制 Pagefind 的自带 UI 变量，使其完美融入你的暗黑科技风 */
+  /* 深度定制 Pagefind 的自带 UI 变量 */
   :root {
     --pagefind-ui-scale: 1;
     --pagefind-ui-primary: var(--accent-color);
     --pagefind-ui-text: var(--text-primary);
-    --pagefind-ui-background: transparent;
+    --pagefind-ui-background: var(--bg-color); /* 之前是 transparent，现在跟随主题背景 */
     --pagefind-ui-border: var(--border-color);
     --pagefind-ui-tag: rgba(0, 240, 255, 0.1);
     --pagefind-ui-border-width: 1px;
@@ -47,8 +47,26 @@
     --pagefind-ui-font: inherit;
   }
   
-  /* 隐藏默认自带的清除按钮，优化输入框 */
-  .pagefind-ui__search-input { outline: none; background: rgba(0,0,0,0.2) !important; }
+  /* 优化输入框背景，确保在 Light/Dark 模式下都清晰 */
+  .pagefind-ui__search-input { 
+    outline: none; 
+    background: var(--surface-color) !important; 
+    color: var(--text-primary) !important;
+  }
+
+  /* 2. 恢复并美化清理按钮样式 */
+  .pagefind-ui__search-clear {
+    background-color: transparent !important;
+    color: var(--text-secondary) !important;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+  }
+  .pagefind-ui__search-clear:hover {
+    color: var(--accent-color) !important;
+    background-color: var(--accent-glow) !important;
+  }
 </style>
 
 <script is:inline>

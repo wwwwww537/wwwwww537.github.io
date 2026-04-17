@@ -2,26 +2,22 @@
 
 /* src/styles/global.css */
 :root {
-  /* 默认：明亮模式变量 */
-  --bg-color: #f8fafc;
-  --surface-color: rgba(255, 255, 255, 0.7);
-  --accent-color: #0284c7; /* 科技蓝 */
-  --accent-glow: rgba(2, 132, 199, 0.2);
-  --text-primary: #0f172a;
+  /* 护眼 Light 模式：采用微醺灰/ Slate 50，减少对比度 */
+  --bg-color: #f8fafc; 
+  --surface-color: #ffffff; /* 纯白底框 */
+  --accent-color: #0369a1; 
+  --text-primary: #334155; /* 深灰替代纯黑，护眼 */
   --text-secondary: #64748b;
-  --border-color: rgba(0, 0, 0, 0.05);
-  --radius-lg: 16px;
+  --border-color: #e2e8f0;
 }
 
 html[data-theme='dark'] {
-  /* 暗黑模式变量 (覆盖默认值) */
-  --bg-color: #050508;
-  --surface-color: rgba(20, 20, 28, 0.6);
-  --accent-color: #00f0ff; /* 赛博青 */
-  --accent-glow: rgba(0, 240, 255, 0.3);
-  --text-primary: #e2e8f0;
+  --bg-color: #020617; /* 更深邃的蓝黑 */
+  --surface-color: #0f172a; /* 稍微亮一点的容器 */
+  --accent-color: #06b6d4;
+  --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
-  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color: #1e293b;
 }
 
 /* 页面背景：网格纹理效果 */
@@ -56,6 +52,21 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+/* 标准化卡片样式 */
+.cyber-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cyber-card:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 /* src/styles/global.css 追加加载动画样式 */
@@ -114,4 +125,15 @@ body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+}
+
+/* src/styles/global.css */
+/* 强制在样式加载前隐藏主体（如果需要） */
+html.loading body {
+  visibility: hidden;
+}
+
+/* 解决 4：Live2D 的顽固变大问题通常是因为 transform 继承 */
+#waifu-tips {
+  font-size: 14px !important; /* 锁定文字大小 */
 }

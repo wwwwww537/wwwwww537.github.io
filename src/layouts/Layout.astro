@@ -4,6 +4,7 @@ import { ClientRouter } from 'astro:transitions';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import LangToggle from '../components/LangToggle.astro';
 import SearchModal from '../components/SearchModal.astro';
+import Waifu from '../components/Waifu.astro';
 import { useTranslations } from '../i18n/utils';
 import '../styles/global.css';
 
@@ -42,6 +43,65 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 	font-size: 0.8rem; 
 	border: 1px solid var(--border-color); 
   }
+  /* 这里没有 is:global，所有的 class 只对当前 Layout.astro 生效，极其标准和安全 */
+.main-header {
+	border-bottom: 1px solid var(--border-color); 
+	margin-bottom: 2rem;
+	background: var(--bg-color); /* 可以在滚动时配合粘性定位加半透明 */
+}
+
+.nav-container {
+	padding: 1rem 2rem; 
+	display: flex; 
+	justify-content: space-between; 
+	align-items: center;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.nav-links {
+	display: flex; 
+	gap: 1.5rem; 
+	font-weight: bold;
+}
+
+.nav-links a {
+	color: var(--text-primary); 
+	text-decoration: none;
+	transition: color 0.3s;
+}
+
+.nav-links a:hover {
+	color: var(--accent-color);
+}
+
+.nav-controls {
+	display: flex; 
+	align-items: center; 
+	gap: 1rem;
+}
+
+#waifu {
+    position: fixed !important;
+    bottom: -10px !important;
+    left: 10px !important;
+    width: 280px !important;
+    height: 250px !important;
+    z-index: 100 !important;
+    pointer-events: none !important;
+    /* 强行覆盖脚本可能产生的动态缩放 */
+    transform: scale(1) !important;
+    transform-origin: bottom left !important;
+  }
+  #waifu canvas {
+    width: 280px !important;
+    height: 250px !important;
+  }
+  #waifu > * { pointer-events: auto !important; }
+
+  @media (max-width: 768px) {
+    #waifu { display: none !important; }
+  }
 </style>
 <html lang={lang} data-theme="dark">
 	<head>
@@ -49,6 +109,7 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="stylesheet" href="/live2d/waifu.css" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		
@@ -71,56 +132,68 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 	</head>
 	<body>
 		<div id="global-loader" class="loader-wrapper" style="display:none">
-			<div class="loader-content">
-				<div class="cyber-ring"></div>
-				<div class="loading-text">SYSTEM INITIALIZING<span class="cursor">_</span></div>
 			</div>
-		</div>
 
-		<script is:inline>
-			if (typeof sessionStorage == 'undefined' || !sessionStorage.getItem('siteLoaded')) {
-				document.getElementById('global-loader').style.display = '';
-			}
-		</script>
-		<nav style="padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); margin-bottom: 2rem;">
-			<div style="display: flex; gap: 1.5rem; font-weight: bold;">
-				<a href={getRelativePath('/')} style="color: var(--text-primary); text-decoration: none;">{t('nav.home')}</a>
-				<a href={getRelativePath('/awards')} style="color: var(--text-primary); text-decoration: none;">{t('nav.awards')}</a>
-				<a href={getRelativePath('/blog')} style="color: var(--text-primary); text-decoration: none;">{t('nav.blog')}</a>
+		<header class="main-header">
+			<nav class="nav-container">
+				<div class="nav-links">
+					<a href={getRelativePath('/')}>{t('nav.home')}</a>
+					<a href={getRelativePath('/blog')}>技术笔记</a>
+					<a href={getRelativePath('/projects')}>开源项目</a>
+					<a href={getRelativePath('/schedule')}>行程 & 活动</a>
+					<a href={getRelativePath('/boardgames')}>桌游墙</a>
+					<a href={getRelativePath('/bookmarks')}>导航站</a>
 				</div>
 
-			<div style="display: flex; align-items: center; gap: 1rem;">
-				
-				<div class="search-box">
-					<input type="text" placeholder="Search system..." />
-					<kbd>⌘K</kbd>
+				<div class="nav-controls">
+					<div class="search-box">
+						<input type="text" placeholder="Search system..." disabled />
+						<kbd>⌘K</kbd>
+					</div>
+					<LangToggle />
+					<ThemeToggle />
 				</div>
-				<LangToggle />
-				<ThemeToggle />
-			</div>
-		</nav>
+			</nav>
+		</header>
 
 		<main transition:animate="fade">
 			<slot />
 		</main>
 		<SearchModal />
-		<script is:inline defer src="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js" data-astro-rerun></script>
-		<script is:inline>
-			const initLoader = () => {
-				const loader = document.getElementById('global-loader');
-				// 如果不存在或者已经被上面的阻断脚本隐藏了，就不再注册 load 事件
-				if (!loader || loader.style.display === 'none') return;
-
-				window.addEventListener('load', () => {
-					setTimeout(() => {
-						loader.classList.add('hidden');
-						sessionStorage.setItem('siteLoaded', 'true');
-						setTimeout(() => loader.remove(), 600);
-					}, 800);
-				});
-			};
-			
-			initLoader();
-		</script>
+		<Waifu />
 	</body>
+	<script is:inline>
+		// 监听 Astro 页面替换事件，持久化看板娘 DOM
+		document.addEventListener('astro:before-swap', (e) => {
+			const waifu = document.getElementById('waifu');
+			if (waifu) {
+				// 在新页面中保留该节点
+				window.waifu = waifu;
+				//e.newDocument.body.appendChild(waifu);
+			}
+		});
+		document.addEventListener('astro:page-load', () => {
+			if (window.waifu) {
+				// 在新页面中保留该节点
+				document.body.appendChild(window.waifu);
+			}
+		});
+	</script>
+	<script is:inline>
+		const initLoader = () => {
+			const loader = document.getElementById('global-loader');
+			// 如果不存在或者已经被上面的阻断脚本隐藏了，就不再注册 load 事件
+			if (!loader || loader.style.display === 'none') return;
+
+			window.addEventListener('load', () => {
+				setTimeout(() => {
+					loader.classList.add('hidden');
+					sessionStorage.setItem('siteLoaded', 'true');
+					setTimeout(() => loader.remove(), 600);
+				}, 800);
+			});
+		};
+		
+		initLoader();
+	</script>
 </html>
