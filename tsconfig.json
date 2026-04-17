@@ -1,5 +1,15 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "compilerOptions": {
+    // 关闭“未使用的局部变量”警告
+    "noUnusedLocals": false,
+    // 关闭“未使用的函数参数”警告（可选）
+    "noUnusedParameters": false
+  },
+  "exclude": [
+    "dist",
+    "public/**/*",
+    "node_modules"
+  ]
 }
