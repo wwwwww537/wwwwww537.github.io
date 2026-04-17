@@ -1,0 +1,16 @@
+---
+// src/pages/[lang]/projects.astro
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+// 接下来正常获取 lang 变量并执行你的逻辑
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'zh' | 'en');
+---

@@ -1,0 +1,62 @@
+---
+// src/pages/[lang]/awards.astro
+import Layout from '../../layouts/Layout.astro';
+import TechCard from '../../components/TechCard.astro';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+const { lang } = Astro.params;
+
+// 1. 初始化界面静态文案字典
+const t = useTranslations(lang as 'zh' | 'en');
+
+// 2. 动态加载列表业务数据 (提取 .default)
+const allDataFiles = import.meta.glob('../../data/awards_*.json', { eager: true });
+const targetModule = allDataFiles[`../../data/awards_${lang}.json`] as any;
+const awardsData = targetModule.default;
+---
+
+<Layout title={t('nav.awards')} lang={lang as 'zh' | 'en'}>
+  <div class="tech-container">
+    <header style="margin-bottom: 3rem;">
+      <h1 transition:name="hero-title" style="font-size: 2.5rem; color: var(--accent-color);">
+        {t('nav.awards')}
+      </h1>
+      <p style="color: var(--text-secondary);">{t('awards.desc')}</p>
+    </header>
+
+    <h2 style="margin-bottom: 1.5rem; border-left: 4px solid var(--accent-color); padding-left: 10px;">
+      {t('awards.patents')}
+    </h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+      {awardsData.patents.map((item: any) => (
+        <TechCard 
+          title={item.title} 
+          desc={item.desc} 
+          tag={item.tag}
+          href={item.link}
+        />
+      ))}
+    </div>
+
+    <h2 style="margin-bottom: 1.5rem; border-left: 4px solid var(--accent-color); padding-left: 10px;">
+      {t('awards.certs')}
+    </h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+      {awardsData.certificates.map((item: any) => (
+        <TechCard 
+          title={item.title} 
+          desc={item.desc} 
+          tag={item.tag}
+          href={item.link}
+        />
+      ))}
+    </div>
+  </div>
+</Layout>

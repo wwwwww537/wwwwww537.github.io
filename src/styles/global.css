@@ -1,1 +1,117 @@
 @import "tailwindcss";
+
+/* src/styles/global.css */
+:root {
+  /* 默认：明亮模式变量 */
+  --bg-color: #f8fafc;
+  --surface-color: rgba(255, 255, 255, 0.7);
+  --accent-color: #0284c7; /* 科技蓝 */
+  --accent-glow: rgba(2, 132, 199, 0.2);
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-color: rgba(0, 0, 0, 0.05);
+  --radius-lg: 16px;
+}
+
+html[data-theme='dark'] {
+  /* 暗黑模式变量 (覆盖默认值) */
+  --bg-color: #050508;
+  --surface-color: rgba(20, 20, 28, 0.6);
+  --accent-color: #00f0ff; /* 赛博青 */
+  --accent-glow: rgba(0, 240, 255, 0.3);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 页面背景：网格纹理效果 */
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+  background-color: var(--bg-color);
+  background-image: 
+    linear-gradient(var(--border-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* 炫酷的滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 10px;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* 统一卡片基础 */
+.tech-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* src/styles/global.css 追加加载动画样式 */
+.loader-wrapper {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-color); /* 纯粹跟随系统主题的背景色 */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0.6s;
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* 赛博旋转环 */
+.cyber-ring {
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: cyber-spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.loading-text {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--accent-color);
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes cyber-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* 隐藏动画 */
+.loader-wrapper.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}

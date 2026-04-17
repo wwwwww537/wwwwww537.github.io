@@ -1,0 +1,38 @@
+---
+// src/components/LangToggle.astro
+const { pathname } = Astro.url;
+
+// 移除路径开头的 /zh 或 /en 部分，获取纯粹的路由名
+// 例如 /zh/awards -> /awards
+const purePath = pathname.replace(/^\/(zh|en)/, '');
+
+const targetZh = `/zh${purePath || '/'}`;
+const targetEn = `/en${purePath || '/'}`;
+
+const isEn = pathname.startsWith('/en');
+---
+
+<div class="lang-switcher">
+  <a href={targetZh} class={!isEn ? "active" : ""}>ZH</a>
+  <span class="divider">/</span>
+  <a href={targetEn} class={isEn ? "active" : ""}>EN</a>
+</div>
+
+<style>
+  .lang-switcher {
+    display: flex;
+    gap: 8px;
+    font-size: 0.8rem;
+    margin-right: 1rem;
+    color: var(--text-secondary);
+  }
+  .lang-switcher a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s;
+  }
+  .lang-switcher a.active {
+    color: var(--accent-color);
+    font-weight: bold;
+  }
+</style>

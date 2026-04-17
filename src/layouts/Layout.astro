@@ -1,68 +1,126 @@
 ---
+// src/layouts/Layout.astro
+import { ClientRouter } from 'astro:transitions';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import LangToggle from '../components/LangToggle.astro';
+import SearchModal from '../components/SearchModal.astro';
+import { useTranslations } from '../i18n/utils';
+import '../styles/global.css';
+
 interface Props {
 	title: string;
+	lang: 'zh' | 'en';
 }
-const { title } = Astro.props;
-import '../styles/global.css'
+
+const { title, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const getRelativePath = (path: string) => `/${lang}${path}`;
 ---
+
 <!doctype html>
-<html lang="zh-CN">
+<style>
+  .search-box {
+    display: flex; align-items: center; background: rgba(0,0,0,0.2); 
+    border: 1px solid var(--border-color); border-radius: 8px; padding: 4px 12px;
+	cursor: pointer;
+	opacity: 0.7;
+  }
+  .search-box input { 
+	background: transparent; 
+	border: none; 
+	color: var(--text-primary); 
+	outline: none; 
+	width: 120px; 
+	cursor: pointer; 
+  }
+  .search-box kbd { 
+	font-family: monospace; 
+	background: var(--surface-color); 
+	padding: 2px 6px; 
+	border-radius: 4px; 
+	font-size: 0.8rem; 
+	border: 1px solid var(--border-color); 
+  }
+</style>
+<html lang={lang} data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="我的个人博客" />
+		<meta name="description" content="Astro description" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		
+		<ClientRouter />
+		<script is:inline>
+			const applyTheme = () => {
+				const theme = (() => {
+					if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+						return localStorage.getItem('theme');
+					}
+					return 'dark';
+				})();
+				document.documentElement.setAttribute('data-theme', theme);
+			};
+
+			applyTheme();
+
+			document.addEventListener('astro:after-swap', applyTheme);
+		</script>
 	</head>
 	<body>
-		<div class="max-w-3xl mx-auto px-6 py-12">
-			<nav class="flex justify-between items-center mb-16">
-				<a href="/" class="text-xl font-bold tracking-wider text-gray-800 hover:opacity-70 transition">MySpace.</a>
-				<div class="space-x-6 text-sm text-gray-500">
-					<a href="/" class="hover:text-gray-900 transition">首页</a>
-					<a href="/blog" class="hover:text-gray-900 transition">文章</a>
-					<a href="https://github.com/" target="_blank" class="hover:text-gray-900 transition">GitHub</a>
-				</div>
-			</nav>
-			<slot />
+		<div id="global-loader" class="loader-wrapper" style="display:none">
+			<div class="loader-content">
+				<div class="cyber-ring"></div>
+				<div class="loading-text">SYSTEM INITIALIZING<span class="cursor">_</span></div>
+			</div>
 		</div>
+
+		<script is:inline>
+			if (typeof sessionStorage == 'undefined' || !sessionStorage.getItem('siteLoaded')) {
+				document.getElementById('global-loader').style.display = '';
+			}
+		</script>
+		<nav style="padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); margin-bottom: 2rem;">
+			<div style="display: flex; gap: 1.5rem; font-weight: bold;">
+				<a href={getRelativePath('/')} style="color: var(--text-primary); text-decoration: none;">{t('nav.home')}</a>
+				<a href={getRelativePath('/awards')} style="color: var(--text-primary); text-decoration: none;">{t('nav.awards')}</a>
+				<a href={getRelativePath('/blog')} style="color: var(--text-primary); text-decoration: none;">{t('nav.blog')}</a>
+				</div>
+
+			<div style="display: flex; align-items: center; gap: 1rem;">
+				
+				<div class="search-box">
+					<input type="text" placeholder="Search system..." />
+					<kbd>⌘K</kbd>
+				</div>
+				<LangToggle />
+				<ThemeToggle />
+			</div>
+		</nav>
+
+		<main transition:animate="fade">
+			<slot />
+		</main>
+		<SearchModal />
+		<script is:inline defer src="https://fastly.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js" data-astro-rerun></script>
+		<script is:inline>
+			const initLoader = () => {
+				const loader = document.getElementById('global-loader');
+				// 如果不存在或者已经被上面的阻断脚本隐藏了，就不再注册 load 事件
+				if (!loader || loader.style.display === 'none') return;
+
+				window.addEventListener('load', () => {
+					setTimeout(() => {
+						loader.classList.add('hidden');
+						sessionStorage.setItem('siteLoaded', 'true');
+						setTimeout(() => loader.remove(), 600);
+					}, 800);
+				});
+			};
+			
+			initLoader();
+		</script>
 	</body>
 </html>
-
-<style is:global>
-	:root {
-		/* 定义高级感的全局变量 */
-		--bg-color: #FAFAFA; /* 极其柔和的灰白色背景 */
-		--text-main: #2C2C2C; /* 避免纯黑，使用深灰 */
-		--text-muted: #888888;
-		--card-bg: #FFFFFF;
-		--radius-lg: 20px; /* 大圆角，体现圆滑感 */
-		--radius-md: 12px; /* 按钮或小卡片的圆角 */
-		--shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.04); /* 极度轻盈的阴影 */
-	}
-
-	html {
-		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-		background-color: var(--bg-color);
-		color: var(--text-main);
-		line-height: 1.6;
-	}
-
-	body {
-		margin: 0;
-	}
-
-	/* 全局卡片类，方便复用 */
-	.smooth-card {
-		background: var(--card-bg);
-		border-radius: var(--radius-lg);
-		padding: 2rem;
-		box-shadow: var(--shadow-soft);
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-	}
-	
-	.smooth-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-	}
-</style>

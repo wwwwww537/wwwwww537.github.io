@@ -1,0 +1,23 @@
+---
+// src/pages/[lang]/index.astro
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'zh' } },
+    { params: { lang: 'en' } }
+  ];
+}
+
+// 接下来正常获取 lang 变量并执行你的逻辑
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'zh' | 'en');
+---
+
+<Layout title={`${t('nav.home')} - 科技博客`} lang={lang as 'zh' | 'en'}>
+	<div class="tech-container">
+		<h1 transition:name="hero-title">{t('hero.title')}</h1>
+		<p>{t('hero.desc')}</p>
+	</div>
+</Layout>

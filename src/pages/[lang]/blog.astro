@@ -1,0 +1,60 @@
+---
+// src/pages/[lang]/blog.astro
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { useTranslations } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const t = useTranslations(lang as 'zh' | 'en');
+
+// 获取所有博客，并根据当前语言过滤，按时间倒序排列
+const allPosts = await getCollection('blog', (post: CollectionEntry<'blog'>) => {
+  return post.data.lang === lang;
+});
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 提取所有不重复的分类 (用于分类标签)
+const categories = [...new Set(sortedPosts.map((post) => post.data.category))];
+---
+
+<Layout title="博客文章" lang={lang as 'zh' | 'en'}>
+  <div class="tech-container">
+    <h1 style="color: var(--accent-color); margin-bottom: 2rem;">我的思考与沉淀</h1>
+    
+    <div class="category-bar">
+       <span class="active">全部</span>
+       {categories.map(cat => (
+         <span class="category-tag">{cat}</span>
+       ))}
+    </div>
+
+    <div class="blog-list">
+      {sortedPosts.map(post => (
+        <a href={`/${lang}/blog/${post.id}`} class="blog-card">
+          <h3>{post.data.title}</h3>
+          <p>{post.data.description}</p>
+          <div class="meta">
+            <span>📅 {post.data.pubDate.toLocaleDateString()}</span>
+            <span class="tag">{post.data.category}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* 补充科技感分类标签和卡片样式 */
+  .category-bar { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+  .category-tag, .category-bar .active { cursor: pointer; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border-color); color: var(--text-secondary); transition: all 0.3s; }
+  .category-bar .active, .category-tag:hover { color: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 0 10px var(--accent-glow); }
+  
+  .blog-card { display: block; text-decoration: none; color: inherit; padding: 1.5rem; border-radius: var(--radius-lg); background: var(--surface-color); margin-bottom: 1rem; border: 1px solid var(--border-color); transition: 0.3s; }
+  .blog-card:hover { transform: translateX(10px); border-color: var(--accent-color); }
+  .meta { display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+  .meta .tag { color: var(--accent-color); }
+</style>

@@ -1,0 +1,10 @@
+{
+  "nav.home": "Home",
+  "nav.awards": "Awards",
+  "nav.blog": "Blog",
+  "hero.title": "Welcome to My Space",
+  "hero.desc": "Frontend Engineer / Advanced Interaction Design",
+  "awards.desc": "Showcasing my authorized patents and professional certificates.",
+  "awards.patents": "专利授权",
+  "awards.certs": "专业证书"
+}

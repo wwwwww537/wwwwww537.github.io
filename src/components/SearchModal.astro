@@ -1,0 +1,108 @@
+---
+// src/components/SearchModal.astro
+---
+
+<dialog id="search-dialog" class="cyber-dialog">
+  <div class="dialog-content">
+    <button id="close-search" class="close-btn">ESC</button>
+    <div id="search-root"></div>
+  </div>
+</dialog>
+
+<style is:global>
+  /* 弹窗遮罩样式 */
+  .cyber-dialog {
+    padding: 0;
+    border: 1px solid var(--accent-color);
+    border-radius: 12px;
+    background: var(--surface-color);
+    backdrop-filter: blur(16px);
+    width: 90%;
+    max-width: 600px;
+    top: 10%;
+    margin: 0 auto;
+    box-shadow: 0 0 40px var(--accent-glow);
+    color: var(--text-primary);
+  }
+  
+  .cyber-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  .dialog-content { padding: 2rem; position: relative; }
+  .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: 1px solid var(--border-color); color: var(--text-secondary); border-radius: 4px; cursor: pointer; padding: 2px 8px; font-size: 0.8rem; }
+  .close-btn:hover { border-color: var(--accent-color); color: var(--accent-color); }
+
+  /* 深度定制 Pagefind 的自带 UI 变量，使其完美融入你的暗黑科技风 */
+  :root {
+    --pagefind-ui-scale: 1;
+    --pagefind-ui-primary: var(--accent-color);
+    --pagefind-ui-text: var(--text-primary);
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: var(--border-color);
+    --pagefind-ui-tag: rgba(0, 240, 255, 0.1);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: inherit;
+  }
+  
+  /* 隐藏默认自带的清除按钮，优化输入框 */
+  .pagefind-ui__search-input { outline: none; background: rgba(0,0,0,0.2) !important; }
+</style>
+
+<script is:inline>
+  // 确保在 Astro 的 ViewTransitions 每次页面切换后都绑定事件
+  document.addEventListener('astro:page-load', () => {
+    const dialog = document.getElementById('search-dialog');
+    const closeBtn = document.getElementById('close-search');
+    // 获取导航栏上你之前加的那个假输入框，作为触发按钮
+    const searchTrigger = document.querySelector('.search-box'); 
+    let isInitialized = false;
+
+    const openSearch = () => {
+      dialog.showModal();
+      // 只有第一次打开时才动态引入 Pagefind 的 JS 和 CSS，极致性能！
+      if (!isInitialized) {
+        // 动态加载 CSS
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '/pagefind/pagefind-ui.css';
+        document.head.appendChild(link);
+        
+        // 动态加载 JS
+        const script = document.createElement('script');
+        script.src = '/pagefind/pagefind-ui.js';
+        script.onload = () => {
+          new PagefindUI({ element: "#search-root", showSubResults: true, resetStyles: false });
+          document.querySelector('.pagefind-ui__search-input').focus();
+        };
+        document.body.appendChild(script);
+        isInitialized = true;
+      } else {
+        // 如果已经加载过，直接聚焦输入框
+        setTimeout(() => document.querySelector('.pagefind-ui__search-input').focus(), 100);
+      }
+    };
+
+    const closeSearch = () => dialog.close();
+
+    // 点击导航栏搜索框触发
+    if (searchTrigger) searchTrigger.addEventListener('click', openSearch);
+    // ESC 按钮触发
+    if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+    
+    // 核心：监听 ⌘K 或 Ctrl+K 全局快捷键
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        dialog.open ? closeSearch() : openSearch();
+      }
+    });
+
+    // 点击遮罩层外围关闭
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) closeSearch();
+    });
+  });
+</script>
