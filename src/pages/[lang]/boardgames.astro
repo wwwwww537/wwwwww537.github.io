@@ -3,6 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import bgData from '../../data/boardgames.json';
 import '../../styles/boardgames.css';
 
+export function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
 const { lang } = Astro.params;
 const games = bgData[lang === 'en' ? 'en' : 'zh'];
 ---
