@@ -7,6 +7,7 @@ import SearchModal from '../components/SearchModal.astro';
 import Waifu from '../components/Waifu.astro';
 import { useTranslations } from '../i18n/utils';
 import '../styles/global.css';
+import '../styles/layout.css';
 
 interface Props {
 	title: string;
@@ -138,8 +139,9 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 			<nav class="nav-container">
 				<div class="nav-links">
 					<a href={getRelativePath('/')}>{t('nav.home')}</a>
-					<a href={getRelativePath('/blog')}>技术笔记</a>
-					<a href={getRelativePath('/projects')}>开源项目</a>
+					<a href={getRelativePath('/blog')}>笔记</a>
+					<a href={getRelativePath('/projects')}>项目</a>
+					<a href={getRelativePath('/awards')}>专利 & 奖项</a>
 					<a href={getRelativePath('/schedule')}>行程 & 活动</a>
 					<a href={getRelativePath('/boardgames')}>桌游墙</a>
 					<a href={getRelativePath('/bookmarks')}>导航站</a>
@@ -170,8 +172,7 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 				e.newDocument.body.appendChild(waifu);
 			}
 		});
-	</script>
-	<script is:inline>
+
 		const initLoader = () => {
 			const loader = document.getElementById('global-loader');
 			// 如果不存在或者已经被上面的阻断脚本隐藏了，就不再注册 load 事件

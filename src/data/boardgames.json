@@ -1,0 +1,72 @@
+{
+  "zh": [
+    {
+      "id": "bg-avalon",
+      "name": "阿瓦隆 (Avalon)",
+      "status": "LENT_OUT",
+      "lentTo": "Jack (前端组)",
+      "players": "5-10 人",
+      "playtime": "30 Mins",
+      "weight": "轻度策略",
+      "rules_url": "#",
+      "desc": "经典的身份推理阵营游戏，友谊的小船说翻就翻。"
+    },
+    {
+      "id": "bg-tfm",
+      "name": "重塑火星 (Terraforming Mars)",
+      "status": "IN_LIBRARY",
+      "lentTo": null,
+      "players": "1-5 人",
+      "playtime": "120 Mins",
+      "weight": "重度德式",
+      "rules_url": "#",
+      "desc": "扮演星际财阀，通过打出卡牌和放置板块来改造火星环境。"
+    },
+    {
+      "id": "bg-splendor",
+      "name": "璀璨宝石 (Splendor)",
+      "status": "IN_LIBRARY",
+      "lentTo": null,
+      "players": "2-4 人",
+      "playtime": "30 Mins",
+      "weight": "轻度策略",
+      "rules_url": "#",
+      "desc": "极其流畅的引擎构筑入门桌游，收集宝石换取分数。"
+    }
+  ],
+  "en": [
+    {
+      "id": "bg-avalon",
+      "name": "The Resistance: Avalon",
+      "status": "LENT_OUT",
+      "lentTo": "Jack (Frontend)",
+      "players": "5-10 P",
+      "playtime": "30 Mins",
+      "weight": "Light",
+      "rules_url": "#",
+      "desc": "Classic social deduction game."
+    },
+    {
+      "id": "bg-tfm",
+      "name": "Terraforming Mars",
+      "status": "IN_LIBRARY",
+      "lentTo": null,
+      "players": "1-5 P",
+      "playtime": "120 Mins",
+      "weight": "Heavy",
+      "rules_url": "#",
+      "desc": "Compete to transform Mars into a habitable planet."
+    },
+    {
+      "id": "bg-splendor",
+      "name": "Splendor",
+      "status": "IN_LIBRARY",
+      "lentTo": null,
+      "players": "2-4 P",
+      "playtime": "30 Mins",
+      "weight": "Light",
+      "rules_url": "#",
+      "desc": "Engine-building and chip-collecting game."
+    }
+  ]
+}

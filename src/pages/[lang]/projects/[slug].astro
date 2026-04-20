@@ -1,0 +1,62 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import '../../../styles/project-detail.css'; // 沿用硬派 UI 样式和 terminal-loader
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(proj => ({
+    params: { 
+      lang: proj.data.lang, 
+      slug: proj.id 
+    },
+    props: { project: proj },
+  }));
+}
+
+const { lang } = Astro.params;
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<Layout title={`${project.data.title} - System Profile`} lang={lang as 'zh' | 'en'}>
+  <div class="jules-container max-w-5xl mx-auto pt-4 pb-20 px-4">
+    
+    <div class="flex justify-between items-end mb-8">
+      <div id="loader" class="terminal-loader loading">
+        <p>> ESTABLISHING_SECURE_LINK...</p>
+        <p>> DECRYPTING: {project.id.toUpperCase()}</p>
+        <p>> STATUS: READY</p>
+      </div>
+    </div>
+
+    <section class="jules-detail-card p-8 mb-8 border-l-[12px] border-l-[var(--accent-color)]">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+        <h1 class="text-3xl font-bold font-pixel">{project.data.title}</h1>
+        <span class="px-3 py-1 bg-[var(--text-primary)] text-[var(--bg-color)] font-pixel text-sm">
+          {project.data.status}
+        </span>
+      </div>
+      
+      <div class="flex flex-wrap gap-4 font-mono text-xs opacity-80 border-t-2 border-dashed border-[var(--border-color)] pt-4 mt-2">
+        <span>[CATEGORY]: {project.data.category}</span>
+        {project.data.repoUrl && (
+          <a href={project.data.repoUrl} target="_blank" class="hover:text-[var(--accent-color)] underline decoration-dashed">
+            [SOURCE_CODE]
+          </a>
+        )}
+      </div>
+    </section>
+
+    <main class="jules-detail-card p-6 md:p-10 markdown-body">
+      <Content />
+    </main>
+
+    <div class="mt-12 text-center">
+      <a href={`/${lang}/projects`} class="jules-btn inline-block px-10 py-2 text-sm">
+        &lt; TERMINATE_SESSION
+      </a>
+    </div>
+
+  </div>
+</Layout>

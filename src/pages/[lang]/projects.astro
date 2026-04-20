@@ -1,16 +1,57 @@
 ---
-// src/pages/[lang]/projects.astro
 import Layout from '../../layouts/Layout.astro';
-import { useTranslations } from '../../i18n/utils';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import '../../styles/projects.css';
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: 'zh' } },
-    { params: { lang: 'en' } }
-  ];
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
 }
 
-// 接下来正常获取 lang 变量并执行你的逻辑
 const { lang } = Astro.params;
-const t = useTranslations(lang as 'zh' | 'en');
+
+// 获取当前语言的所有项目
+const allProjects = await getCollection('projects', (entry) => entry.data.lang === lang);
 ---
+
+<Layout title={lang === 'zh' ? '开源项目 - Jules Console' : 'Projects - Jules Console'} lang={lang as 'zh' | 'en'}>
+  
+  <div class="jules-container max-w-6xl mx-auto pt-8 pb-20 px-4">
+    
+    <header class="mb-12">
+      <div class="flex items-center gap-3 text-sm font-mono text-[var(--text-secondary)] mb-2">
+        <span class="text-[var(--accent-color)]">></span>
+        <span>ls ~/workspace/projects/ --list</span>
+      </div>
+      <h1 class="text-4xl font-bold font-pixel text-[var(--text-primary)]">
+        {lang === 'zh' ? '开源项目' : 'PROJECTS'}
+      </h1>
+    </header>
+
+    <div class="projects-grid">
+      {allProjects.map((proj) => (
+        <a href={`/${lang}/projects/${proj.id}`} class="project-card group">
+          <div class="status-tag transition-colors group-hover:bg-[var(--accent-color)] group-hover:border-[var(--accent-color)] group-hover:text-black">
+            {proj.data.status}
+          </div>
+          
+          <h3 class="font-pixel text-xl mb-2 text-[var(--text-primary)] group-hover:text-[var(--accent-color)] transition-colors">
+            {proj.data.title}
+          </h3>
+          
+          <p class="text-sm text-[var(--text-secondary)] mb-4 flex-grow">{proj.data.desc}</p>
+          
+          <div class="tech-stack flex flex-wrap gap-2 mb-4">
+            {proj.data.tech.map((t: string) => (
+              <span class="font-mono text-[10px] px-1.5 border border-[var(--border-color)] opacity-70">{t}</span>
+            ))}
+          </div>
+
+          <div class="mt-auto pt-3 border-t-2 border-dashed border-[var(--border-color)] font-pixel text-xs text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors">
+            [ INITIALIZE_SESSION ] >
+          </div>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</Layout>

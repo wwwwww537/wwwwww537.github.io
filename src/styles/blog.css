@@ -1,0 +1,106 @@
+/* src/styles/pages/blog.css */
+
+/* 分类栏：像素按钮组 */
+.category-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px dashed var(--border-color);
+}
+
+.category-btn {
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-pixel);
+  font-size: 0.9rem;
+  border: 2px solid var(--text-primary);
+  background: var(--surface-color);
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.category-btn.active {
+  background: var(--text-primary);
+  color: var(--bg-color);
+  box-shadow: 4px 4px 0 0 var(--accent-color);
+  transform: translate(-2px, -2px);
+}
+
+html[data-theme='dark'] .category-btn.active {
+  background: var(--accent-color);
+  color: #000;
+  border-color: var(--accent-color);
+}
+
+.category-btn:hover:not(.active) {
+  background: var(--border-color);
+  transform: translateY(-2px);
+}
+
+/* 博客卡片列表 */
+.blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.blog-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 2rem;
+  /* 继承 jules-card 基础样式，这里强化交互 */
+  border: 3px solid var(--text-primary);
+  background: var(--surface-color);
+  box-shadow: 6px 6px 0 0 var(--jules-shadow-color);
+  transition: all 0.2s;
+  position: relative;
+}
+
+.blog-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0 0 var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.blog-card h3 {
+  font-family: var(--font-pixel);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.blog-card p {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* 卡片元数据 */
+.blog-meta {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
+}
+
+.blog-meta .date {
+  color: var(--accent-color);
+}
+
+.blog-meta .category-tag {
+  padding: 0.2rem 0.6rem;
+  background: var(--text-primary);
+  color: var(--bg-color);
+  font-weight: bold;
+}
+
+html[data-theme='dark'] .blog-card {
+  border-color: rgba(255, 255, 255, 0.2);
+}

@@ -3,72 +3,65 @@
 import { getCollection, render } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import { useTranslations } from '../../../i18n/utils';
+import '../../../styles/blog-detail.css'; // 引入详情页专属像素样式
 
-// 【核心逻辑 1】：生成所有可能的文章路径
 export async function getStaticPaths() {
-  // 获取所有博客文章
   const posts = await getCollection('blog');
   
-  // 为每一篇文章生成对应的语言和 slug 路由
   return posts.map(post => ({
     params: { 
       lang: post.data.lang, 
-      slug: post.id // Astro 5.0 中，文件标识符默认是 id
+      slug: post.id 
     },
-    props: { post }, // 将整篇文章的数据通过 props 传给页面
+    props: { post },
   }));
 }
 
-// 【核心逻辑 2】：接收当前路由传递的文章数据
 const { lang } = Astro.params;
 const { post } = Astro.props;
 
-// 【核心逻辑 3】：使用 Astro 5.0 提供的 render 函数解析 Markdown 内容
 const { Content } = await render(post);
-
 const t = useTranslations(lang as 'zh' | 'en');
 ---
 
-<Layout title={post.data.title} lang={lang as 'zh' | 'en'}>
-  <article class="tech-container blog-detail">
+<Layout title={`${post.data.title} - Jules Console`} lang={lang as 'zh' | 'en'}>
+  
+  <article class="jules-container max-w-4xl mx-auto pt-6 pb-20 px-4">
+    
+    <div class="flex items-center gap-3 text-sm font-mono text-[var(--text-secondary)] mb-6 opacity-80">
+      <span class="text-[var(--accent-color)]">root@jules</span>
+      <span>:</span>
+      <span>~/workspace/logs/{post.id}.md</span>
+    </div>
+
     <header class="blog-header">
       <h1 transition:name={`title-${post.id}`}>{post.data.title}</h1>
-      <div class="meta">
-        <span class="date">📅 {post.data.pubDate.toLocaleDateString()}</span>
-        <span class="category">📁 {post.data.category}</span>
-        <div class="tags">
-          {post.data.tags.map((tag: string) => <span class="tag">#{tag}</span>)}
+      
+      <div class="blog-meta">
+        <span class="date">
+          <span class="text-[var(--accent-color)] font-pixel">DATE:</span> 
+          {post.data.pubDate.toLocaleDateString()}
+        </span>
+        <span class="category">
+          <span class="text-[var(--accent-color)] font-pixel">DIR:</span> 
+          /{post.data.category}
+        </span>
+        <div class="blog-tags">
+          {post.data.tags.map((tag: string) => <span class="blog-tag">#{tag}</span>)}
         </div>
       </div>
     </header>
 
-    <div class="markdown-body">
+    <div class="markdown-body jules-card p-6 md:p-10 border-0 md:border-3">
       <Content />
     </div>
 
-    <div class="back-link">
-      <a href={`/${lang}/blog`}>← 返回列表</a>
+    <div class="back-link-container">
+      <a href={`/${lang}/blog`} class="jules-btn inline-block px-8 py-2">
+        &lt; RUN: return_to_list()
+      </a>
     </div>
-  </article>
-</Layout>
 
-<style>
-  /* 科技感博客详情页样式 */
-  .blog-header { margin-bottom: 3rem; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 2rem; }
-  .blog-header h1 { color: var(--accent-color); font-size: 2.5rem; margin-bottom: 1rem; }
-  .meta { display: flex; justify-content: center; gap: 1.5rem; color: var(--text-secondary); font-size: 0.9rem; flex-wrap: wrap; }
-  .tags { display: flex; gap: 0.5rem; }
-  .tag { color: var(--accent-color); background: var(--accent-glow); padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; }
+  </article>
   
-  /* Markdown 正文样式重置 (使其融入科技感主题) */
-  .markdown-body { line-height: 1.8; font-size: 1.1rem; color: var(--text-primary); }
-  .markdown-body h1, .markdown-body h2, .markdown-body h3 { color: var(--accent-color); margin-top: 2rem; }
-  .markdown-body code { font-family: 'Courier New', monospace; background: rgba(0,0,0,0.3); padding: 3px 6px; border-radius: 4px; border: 1px solid var(--border-color); color: #ff7b72; }
-  .markdown-body pre { background: #0d1117; padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); overflow-x: auto; }
-  .markdown-body pre code { background: none; border: none; padding: 0; color: inherit; }
-  .markdown-body blockquote { border-left: 4px solid var(--accent-color); margin: 0; padding-left: 1rem; color: var(--text-secondary); background: rgba(0, 240, 255, 0.05); }
-  
-  .back-link { margin-top: 4rem; text-align: center; }
-  .back-link a { color: var(--accent-color); text-decoration: none; border: 1px solid var(--accent-color); padding: 8px 24px; border-radius: 20px; transition: all 0.3s; }
-  .back-link a:hover { background: var(--accent-glow); box-shadow: 0 0 15px var(--accent-glow); }
-</style>
+</Layout>

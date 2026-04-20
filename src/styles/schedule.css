@@ -1,0 +1,90 @@
+/* src/styles/pages/schedule.css */
+
+/* 日历头部：模拟系统时钟 */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 3px solid var(--text-primary);
+  background: var(--surface-color);
+}
+
+/* 核心日历网格 */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--text-primary); /* 利用间隙形成网格线 */
+  gap: 2px;
+  border: 3px solid var(--text-primary);
+  box-shadow: 8px 8px 0 0 var(--jules-shadow-color);
+}
+
+.calendar-day-label {
+  background: var(--bg-color);
+  padding: 0.75rem;
+  text-align: center;
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.calendar-cell {
+  background: var(--surface-color);
+  min-height: 100px;
+  padding: 0.5rem;
+  position: relative;
+  transition: all 0.1s;
+}
+
+.calendar-cell.today {
+  background: rgba(var(--accent-color-rgb), 0.1);
+}
+
+.calendar-cell:hover {
+  background: var(--bg-color);
+  z-index: 10;
+}
+
+.day-number {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  opacity: 0.5;
+}
+
+/* 事件标记点 */
+.event-dot {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  margin-right: 4px;
+}
+.event-dot.work { background: var(--accent-color); }
+.event-dot.play { background: #facc15; }
+.event-dot.meeting { background: #f87171; }
+
+.cell-event {
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 4px;
+  font-family: var(--font-pixel);
+  padding: 2px 4px;
+  background: var(--bg-color);
+  border: 1px solid var(--text-primary);
+}
+
+/* 详情侧边栏 */
+.schedule-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.task-list-card {
+  background: var(--surface-color);
+  border: 3px solid var(--text-primary);
+  box-shadow: 6px 6px 0 0 var(--jules-shadow-color);
+  padding: 1.5rem;
+}

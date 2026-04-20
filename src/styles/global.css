@@ -1,11 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&family=Share+Tech+Mono&display=swap');
 @import "tailwindcss";
-/* 引入 Jules 风格所需字体：DotGothic16(像素装饰) / VT323(复古终端英文字母) / Share Tech Mono(备用) */
 
 :root {
-  /* ==========================================
-     颜色主题 (保留你原来的护眼配色)
-     ========================================== */
   --bg-color: #f8fafc; 
   --surface-color: #ffffff;
   --accent-color: #0369a1; 
@@ -13,14 +9,11 @@
   --text-secondary: #64748b;
   --border-color: #e2e8f0;
 
-  /* ==========================================
-     Jules 终端排版与阴影变量
-     ========================================== */
   --font-pixel: 'DotGothic16', sans-serif;
-  --font-mono: 'VT323', 'Share Tech Mono', ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+  --font-mono: 'VT323', 'Share Tech Mono', ui-monospace, monospace;
   
   --jules-shadow-size: 6px;
-  --jules-shadow-color: rgba(0, 0, 0, 0.08); /* 极度柔和的硬阴影 */
+  --jules-shadow-color: rgba(0, 0, 0, 0.15); 
 }
 
 html[data-theme='dark'] {
@@ -30,42 +23,29 @@ html[data-theme='dark'] {
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --border-color: #1e293b;
-
-  --jules-shadow-color: rgba(0, 0, 0, 0.3); /* 暗黑模式下加深硬阴影 */
+  --jules-shadow-color: rgba(0, 0, 0, 0.5); 
 }
 
-/* ==========================================
-   全局基础重置
-   ========================================== */
 body {
   transition: background-color 0.5s ease, color 0.5s ease;
   background-color: var(--bg-color);
-  /* 保留网格纹理，完美契合终端风 */
-  background-image: 
-    linear-gradient(var(--border-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
-  background-size: 40px 40px;
+  /* 强化像素风：使用点阵背景替代之前的线框网格 */
+  background-image: radial-gradient(var(--border-color) 2px, transparent 2px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
   color: var(--text-primary);
   margin: 0;
   min-height: 100vh;
-  
-  /* 基础正文使用高可读性终端等宽字体 */
   font-family: var(--font-mono);
   line-height: 1.6;
 }
 
-/* 终端风格滚动条：去除圆角和发光，回归硬核块状 */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--bg-color);
-  border-left: 2px solid var(--border-color);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--text-primary);
-  border: 1px solid var(--bg-color);
-}
+/* 像素风滚动条 */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--surface-color); border-left: 2px solid var(--text-primary); }
+::-webkit-scrollbar-thumb { background: var(--text-primary); }
+html[data-theme='dark'] ::-webkit-scrollbar-track { border-color: rgba(255,255,255,0.3); }
+html[data-theme='dark'] ::-webkit-scrollbar-thumb { background: var(--accent-color); }
 
 /* 字体分配与字间距调优 */
 .jules-container {
@@ -80,166 +60,78 @@ h1, h2, h3, h4, h5, h6,
   letter-spacing: 1.5px; /* 给像素字体增加呼吸感，防止英文字母黏连 */
 }
 
-/* ==========================================
-   Jules 核心 UI 组件库 (全站复用)
-   ========================================== */
-
-/* 主卡片：2px 细边框，大圆角，扁平偏移阴影 */
+/* 取消圆角，加粗边框，形成 8-bit 风格 */
 .jules-card {
   background-color: var(--surface-color);
-  border: 2px solid var(--text-primary);
-  border-radius: 16px;
-  box-shadow: 0 var(--jules-shadow-size) 0 0 var(--jules-shadow-color);
-  transition: box-shadow 0.2s, transform 0.2s;
+  border: 3px solid var(--text-primary);
+  border-radius: 0; /* 移除原来的 16px 圆角 */
+  box-shadow: var(--jules-shadow-size) var(--jules-shadow-size) 0 0 var(--jules-shadow-color);
 }
-html[data-theme='dark'] .jules-card {
-  border-color: rgba(255, 255, 255, 0.15);
-}
+html[data-theme='dark'] .jules-card { border-color: rgba(255, 255, 255, 0.3); }
 
-/* 内嵌卡片：无边框，依靠微弱背景色差划分 */
 .jules-inner-card {
-  background-color: rgba(0, 0, 0, 0.03);
-  border: 2px solid transparent;
-  border-radius: 12px;
+  background-color: transparent;
+  border: 2px dashed var(--border-color);
+  border-radius: 0;
   padding: 1.5rem;
   transition: all 0.2s;
 }
-html[data-theme='dark'] .jules-inner-card { background-color: rgba(255, 255, 255, 0.03); }
 .jules-inner-card:hover {
+  border-style: solid;
   border-color: var(--text-primary);
   background-color: var(--surface-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 0 0 rgba(0,0,0,0.05);
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 0 var(--text-primary);
 }
 html[data-theme='dark'] .jules-inner-card:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 0 0 rgba(0,0,0,0.3);
+  border-color: var(--accent-color);
+  box-shadow: 4px 4px 0 0 var(--accent-color);
 }
 
-/* 标签：直角矩形底框 */
+.jules-btn {
+  display: block;
+  text-align: center;
+  border: 3px solid var(--text-primary);
+  border-radius: 0;
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 4px 4px 0 0 var(--text-primary);
+  transition: transform 0.1s, box-shadow 0.1s;
+  cursor: pointer;
+  text-decoration: none;
+}
+html[data-theme='dark'] .jules-btn {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 4px 4px 0 0 rgba(255, 255, 255, 0.4);
+  color: var(--text-primary);
+}
+.jules-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 0 transparent;
+}
+
 .jules-tag {
   display: inline-block;
   padding: 0.25rem 0.75rem;
   font-size: 0.95rem;
   border: 2px solid var(--text-primary);
-  border-radius: 9999px;
-  background-color: var(--surface-color);
-  box-shadow: 0 2px 0 0 var(--text-primary);
-  font-weight: bold;
+  border-radius: 0;
+  background-color: var(--bg-color);
 }
-html[data-theme='dark'] .jules-tag {
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.3);
-}
+html[data-theme='dark'] .jules-tag { border-color: rgba(255, 255, 255, 0.3); }
 
-/* 交互按钮：点击下压效果 */
-.jules-btn {
-  display: block;
-  text-align: center;
-  border: 2px solid var(--text-primary);
-  border-radius: 10px;
-  background-color: var(--surface-color);
-  color: var(--text-primary);
-  font-weight: bold;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 0 0 var(--text-primary);
-  transition: transform 0.1s, box-shadow 0.1s;
-  cursor: pointer;
-}
-html[data-theme='dark'] .jules-btn {
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 0 0 rgba(255, 255, 255, 0.3);
-}
-.jules-btn:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 0 transparent;
-}
-
-.jules-btn-primary {
-  display: block;
-  text-align: center;
-  border: 2px solid var(--text-primary);
-  border-radius: 10px;
-  background-color: var(--text-primary);
-  color: var(--bg-color);
-  font-weight: bold;
-  font-size: 1.1rem;
-  box-shadow: 0 4px 0 0 rgba(0,0,0,0.5);
-  transition: transform 0.1s, box-shadow 0.1s;
-  cursor: pointer;
-}
-html[data-theme='dark'] .jules-btn-primary {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: #000;
-}
-.jules-btn-primary:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 0 transparent;
-}
-
-/* 侧边栏导航选项 */
 .jules-nav-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.6rem 0.75rem;
-  border-radius: 8px;
-  transition: all 0.2s;
-  font-weight: bold;
-  font-size: 1.1rem;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 0.75rem; border-radius: 0;
+  transition: all 0.2s; font-weight: bold; font-size: 1.1rem;
 }
 .jules-nav-item:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--text-primary);
+  color: var(--bg-color);
   transform: translateX(4px);
 }
-html[data-theme='dark'] .jules-nav-item:hover { background-color: rgba(255, 255, 255, 0.1); }
+html[data-theme='dark'] .jules-nav-item:hover { background-color: var(--accent-color); color: #000; }
 
-/* 时间线穿梭线 */
-.jules-log-item { border-left: 2px solid transparent; }
-.jules-log-item::before {
-  content: ''; position: absolute; left: 3px; top: 14px; bottom: -32px;
-  width: 2px; border-left: 2px dashed rgba(0,0,0,0.15); z-index: 0;
-}
-html[data-theme='dark'] .jules-log-item::before { border-left-color: rgba(255,255,255,0.15); }
-.jules-log-item:last-child::before { display: none; }
-.jules-dot { z-index: 1; }
-
-/* ==========================================
-   全局组件加载器 (Loader) 与其他
-   ========================================== */
-.loader-wrapper {
-  position: fixed; inset: 0;
-  background-color: var(--bg-color); 
-  z-index: 9999; display: flex; justify-content: center; align-items: center;
-  transition: opacity 0.6s, visibility 0.6s;
-}
-
-.loader-content {
-  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
-}
-
-/* 改造赛博环为复古终端加载环 */
-.cyber-ring {
-  width: 60px; height: 60px;
-  border: 4px solid var(--border-color);
-  border-top-color: var(--accent-color);
-  /* 移除发光，保持硬朗 */
-  animation: cyber-spin 1s linear infinite;
-}
-
-.loading-text {
-  font-family: var(--font-pixel);
-  color: var(--text-primary);
-  font-weight: bold; letter-spacing: 2px;
-}
-
-.cursor { animation: blink 1s step-end infinite; }
-@keyframes cyber-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-.loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-html.loading body { visibility: hidden; }
-
-/* 看板娘文本锁定 */
-#waifu-tips { font-size: 14px !important; }
+.jules-dot { z-index: 1; border-radius: 0; transform: rotate(45deg); /* 菱形像素点 */ }

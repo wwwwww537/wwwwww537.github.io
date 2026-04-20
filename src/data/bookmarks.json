@@ -1,0 +1,56 @@
+{
+  "zh": [
+    {
+      "category": "DEV_TOOLS",
+      "title": "开发与工具",
+      "links": [
+        { "name": "GitHub", "url": "https://github.com", "desc": "全球最大的开源代码托管平台", "icon": "⌨️" },
+        { "name": "Vercel", "url": "https://vercel.com", "desc": "前端项目零配置自动化部署", "icon": "🚀" },
+        { "name": "TailwindCSS", "url": "https://tailwindcss.com", "desc": "原子化 CSS 框架速查表", "icon": "🎨" }
+      ]
+    },
+    {
+      "category": "RESOURCES",
+      "title": "文档与参考",
+      "links": [
+        { "name": "Astro Docs", "url": "https://docs.astro.build", "desc": "Astro 官方极速文档", "icon": "🪐" },
+        { "name": "MDN Web Docs", "url": "https://developer.mozilla.org", "desc": "前端开发者的权威字典", "icon": "📚" }
+      ]
+    },
+    {
+      "category": "LINK_EXCHANGE",
+      "title": "友情链接",
+      "links": [
+        { "name": "Jack's Terminal", "url": "#", "desc": "前端老哥的极客博客", "icon": "👽" },
+        { "name": "Alice's Wonderland", "url": "#", "desc": "全栈开发者的数字花园", "icon": "🍄" }
+      ]
+    }
+  ],
+  "en": [
+    {
+      "category": "DEV_TOOLS",
+      "title": "Developer Tools",
+      "links": [
+        { "name": "GitHub", "url": "https://github.com", "desc": "Where the world builds software", "icon": "⌨️" },
+        { "name": "Vercel", "url": "https://vercel.com", "desc": "Develop. Preview. Ship.", "icon": "🚀" },
+        { "name": "TailwindCSS", "url": "https://tailwindcss.com", "desc": "Utility-first CSS framework", "icon": "🎨" }
+      ]
+    },
+    {
+      "category": "RESOURCES",
+      "title": "Resources & Docs",
+      "links": [
+        { "name": "Astro Docs", "url": "https://docs.astro.build", "desc": "Astro official documentation", "icon": "🪐" },
+        { "name": "MDN Web Docs", "url": "https://developer.mozilla.org", "desc": "Resources for developers, by developers", "icon": "📚" }
+      ]
+    },
+    {
+      "category": "LINK_EXCHANGE",
+      "title": "Friend Links",
+      "links": [
+        { "name": "Jack's Terminal", "url": "#", "desc": "Frontend geek blog", "icon": "👽" },
+        { "name": "Alice's Wonderland", "url": "#", "desc": "Fullstack digital garden", "icon": "🍄" }
+      ]
+    }
+  ]
+}

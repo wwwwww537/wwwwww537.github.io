@@ -1,0 +1,131 @@
+/* --- 全局 3D 环境 --- */
+.cabinet-system {
+  perspective: 2000px;
+  padding-bottom: 5rem;
+}
+
+/* --- 循环 Loader (无限打字/扫描) --- */
+.terminal-loader p {
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid var(--accent-color);
+  font-family: var(--font-mono);
+  color: var(--accent-color);
+  font-size: 0.8rem;
+  /* 往复循环 */
+  animation: typing-cycle 4s steps(40) infinite alternate;
+}
+.terminal-loader p:nth-child(2) { animation-delay: 1s; }
+.terminal-loader p:nth-child(3) { animation-delay: 2s; }
+
+@keyframes typing-cycle {
+  0% { width: 0; }
+  30%, 70% { width: 100%; }
+  100% { width: 0; }
+}
+
+/* --- 3D 实体柜体 (Cabinet) --- */
+.cabinet-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0; /* 必须为0以连接层板 */
+  border: 12px solid var(--text-primary);
+  background: var(--surface-color);
+  box-shadow: 20px 20px 0 0 var(--jules-shadow-color);
+}
+
+/* --- 实体层板 (The Shelf Ledge) --- */
+.shelf-unit {
+  position: relative;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* 盒子立在层板上 */
+  padding-bottom: 24px; /* 给层板厚度留空间 */
+  border-bottom: 24px solid var(--text-primary); /* 层板正面 */
+  /* 层板顶部的深度感（厚度表面） */
+  background: linear-gradient(to top, rgba(0,0,0,0.1) 0px, transparent 24px);
+}
+
+/* 层板的“顶面”视角 */
+.shelf-unit::before {
+  content: '';
+  position: absolute;
+  bottom: -24px; left: 0; right: 0;
+  height: 24px;
+  background: var(--text-primary);
+  opacity: 0.8;
+  transform: rotateX(60deg);
+  transform-origin: top;
+}
+
+/* --- 3D 实体桌游盒 (The 3D Box) --- */
+.game-box-3d {
+  width: 160px;
+  height: 240px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+/* 盒子正面 */
+.box-face-front {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-color);
+  border: 4px solid var(--text-primary);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* 盒子的“厚度”侧边 (右侧) */
+.box-face-side {
+  position: absolute;
+  top: 4px; right: -12px; bottom: 4px;
+  width: 12px;
+  background: var(--text-primary);
+  transform: skewY(-45deg);
+  transform-origin: left;
+  opacity: 0.9;
+}
+
+/* 盒子的“厚度”顶边 */
+.box-face-top {
+  position: absolute;
+  top: -12px; left: 4px; right: -8px;
+  height: 12px;
+  background: var(--text-primary);
+  transform: skewX(-45deg);
+  transform-origin: bottom;
+  opacity: 0.8;
+}
+
+/* 悬浮效果：盒子被“抽出来” */
+.game-box-3d:hover {
+  transform: translateZ(50px) translateY(-20px) rotateY(-5deg);
+}
+
+/* 悬浮时显示浮动屏 */
+.box-info-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: var(--text-primary);
+  color: var(--bg-color);
+  padding: 1rem;
+  opacity: 0;
+  transform: translateZ(1px);
+  transition: opacity 0.3s;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.game-box-3d:hover .box-info-overlay {
+  opacity: 1;
+}

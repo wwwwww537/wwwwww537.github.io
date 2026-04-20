@@ -3,58 +3,82 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import { useTranslations } from '../../i18n/utils';
+import '../../styles/blog.css';
 
 export function getStaticPaths() {
   return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
 }
 
 const { lang } = Astro.params;
-const t = useTranslations(lang as 'zh' | 'en');
+const t = useTranslations(lang as 'zh' | 'en'); 
 
-// 获取所有博客，并根据当前语言过滤，按时间倒序排列
+// 获取并过滤数据
 const allPosts = await getCollection('blog', (post: CollectionEntry<'blog'>) => {
   return post.data.lang === lang;
 });
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// 提取所有不重复的分类 (用于分类标签)
+// 提取分类
 const categories = [...new Set(sortedPosts.map((post) => post.data.category))];
 ---
 
-<Layout title="博客文章" lang={lang as 'zh' | 'en'}>
-  <div class="tech-container">
-    <h1 style="color: var(--accent-color); margin-bottom: 2rem;">我的思考与沉淀</h1>
+<Layout title={t('nav.blog')} lang={lang as 'zh' | 'en'}>
+  <div class="jules-container max-w-4xl mx-auto pt-8 pb-20 px-4">
     
-    <div class="category-bar">
-       <span class="active">全部</span>
-       {categories.map(cat => (
-         <span class="category-tag">{cat}</span>
-       ))}
-    </div>
+    <header class="mb-12">
+      <div class="flex items-center gap-3 text-sm font-mono text-[var(--text-secondary)] mb-2">
+        <span class="text-[var(--accent-color)]">></span>
+        <span>cat ~/workspace/logs/*.md</span>
+      </div>
+      <h1 class="text-4xl font-bold font-pixel text-[var(--text-primary)]">
+        {lang === 'zh' ? '笔记' : 'Thoughts & Archives'}
+      </h1>
+    </header>
+
+    <nav class="category-bar">
+      <button class="category-btn active">{lang === 'zh' ? '全部' : 'ALL'}</button>
+      {categories.map(cat => (
+        <button class="category-btn">{cat}</button>
+      ))}
+    </nav>
 
     <div class="blog-list">
       {sortedPosts.map(post => (
         <a href={`/${lang}/blog/${post.id}`} class="blog-card">
+          <div class="absolute -top-3 -right-3 px-2 py-1 bg-[var(--accent-color)] text-black text-[10px] font-bold font-pixel">
+            LOG_ID: {post.id.slice(0, 5).toUpperCase()}
+          </div>
+          
           <h3>{post.data.title}</h3>
+          
           <p>{post.data.description}</p>
-          <div class="meta">
-            <span>📅 {post.data.pubDate.toLocaleDateString()}</span>
-            <span class="tag">{post.data.category}</span>
+          
+          <div class="blog-meta">
+            <span class="date">
+              <span class="opacity-50">PUBLISHED_AT:</span> {post.data.pubDate.toLocaleDateString()}
+            </span>
+            <span class="category-tag">
+              #{post.data.category}
+            </span>
           </div>
         </a>
       ))}
     </div>
+
+    <div class="mt-20 py-8 border-t-2 border-dashed border-[var(--border-color)] text-center font-mono text-xs opacity-40">
+      EOF (End Of File) - JulesOS v4.0.2
+    </div>
   </div>
 </Layout>
 
-<style>
-  /* 补充科技感分类标签和卡片样式 */
-  .category-bar { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
-  .category-tag, .category-bar .active { cursor: pointer; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border-color); color: var(--text-secondary); transition: all 0.3s; }
-  .category-bar .active, .category-tag:hover { color: var(--accent-color); border-color: var(--accent-color); box-shadow: 0 0 10px var(--accent-glow); }
-  
-  .blog-card { display: block; text-decoration: none; color: inherit; padding: 1.5rem; border-radius: var(--radius-lg); background: var(--surface-color); margin-bottom: 1rem; border: 1px solid var(--border-color); transition: 0.3s; }
-  .blog-card:hover { transform: translateX(10px); border-color: var(--accent-color); }
-  .meta { display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
-  .meta .tag { color: var(--accent-color); }
-</style>
+<script>
+  // 这里可以添加简单的客户端过滤逻辑
+  const buttons = document.querySelectorAll('.category-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // 实际过滤逻辑可以根据需求使用 URL params 或简单的 DOM 隐藏
+    });
+  });
+</script>

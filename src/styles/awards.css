@@ -1,0 +1,59 @@
+/* src/styles/pages/awards.css */
+
+.awards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* 奖项卡片：采用更强烈的悬浮反馈 */
+.award-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background-color: var(--surface-color) !important;
+  border: 3px solid var(--text-primary);
+  box-shadow: 6px 6px 0 0 var(--jules-shadow-color);
+  transition: all 0.15s;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+}
+
+.award-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 10px 10px 0 0 var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* 奖项标签（例如：发明专利 / 软考高级） */
+.award-tag {
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  background: var(--text-primary);
+  color: var(--bg-color);
+  padding: 2px 8px;
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  border: 2px solid var(--text-primary);
+  transition: all 0.15s;
+}
+
+html[data-theme='dark'] .award-tag {
+  background: var(--accent-color);
+  color: #000;
+  border-color: var(--accent-color);
+}
+
+.award-card:hover .award-tag {
+  background: var(--accent-color);
+  color: #000;
+  border-color: var(--accent-color);
+}
+
+.award-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}

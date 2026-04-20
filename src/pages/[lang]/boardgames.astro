@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import bgData from '../../data/boardgames.json';
+import '../../styles/boardgames.css';
+
+const { lang } = Astro.params;
+const games = bgData[lang === 'en' ? 'en' : 'zh'];
+---
+
+<Layout title="Physical Storage - Jules Console" lang={lang as 'zh' | 'en'}>
+  <div class="jules-container max-w-7xl mx-auto pt-6 pb-20 px-4 cabinet-system">
+    
+    <header class="mb-12">
+      <div class="terminal-loader mb-4">
+        <p>> INITIALIZING_PHYSICAL_CABINET_V4...</p>
+        <p>> CALIBRATING_DEPTH_SENSORS...</p>
+        <p>> ASSET_VISUALIZATION: 3D_READY</p>
+      </div>
+      <h1 class="text-4xl font-bold font-pixel uppercase tracking-widest">
+        {lang === 'zh' ? '物理资产陈列柜' : 'PHYSICAL_ASSET_CABINET'}
+      </h1>
+    </header>
+
+    <div class="flex gap-4 mb-10 font-pixel text-xs">
+      <button class="jules-btn px-4 py-1 active">[ ALL ]</button>
+      <button class="jules-btn px-4 py-1">[ IN_STOCK ]</button>
+      <button class="jules-btn px-4 py-1 text-red-500">[ LENT_OUT ]</button>
+    </div>
+
+    <div class="cabinet-wall">
+      {games.map(game => (
+        <div class="shelf-unit">
+          
+          <div class={`game-box-3d ${game.status === 'LENT_OUT' ? 'opacity-50' : ''}`}>
+            
+            <div class="box-face-side"></div>
+            <div class="box-face-top"></div>
+            
+            <div class="box-face-front">
+              <div class="text-3xl mb-2">🎲</div>
+              <h3 class="font-pixel text-sm font-bold text-center leading-tight">
+                {game.name}
+              </h3>
+              
+              <div class="box-info-overlay flex flex-col justify-center">
+                <div class="border-b border-dashed border-white/30 pb-2 mb-2">
+                  <p class="text-[10px] opacity-70">STATUS</p>
+                  <p class="font-bold">{game.status}</p>
+                </div>
+                <div class="space-y-1">
+                  <p>> {game.players}</p>
+                  <p>> {game.playtime}</p>
+                </div>
+                <div class="mt-4 text-[9px] text-[var(--accent-color)]">
+                  [ CLICK_TO_EXTRACT ]
+                </div>
+              </div>
+            </div>
+
+            {game.status === 'LENT_OUT' && (
+              <div class="absolute inset-0 z-30 flex items-center justify-center rotate-[-15deg] pointer-events-none">
+                <div class="bg-red-600 text-white font-pixel text-[10px] px-2 py-1 border-2 border-white shadow-lg">
+                  LENT_TO: {game.lentTo}
+                </div>
+              </div>
+            )}
+          </div>
+
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>

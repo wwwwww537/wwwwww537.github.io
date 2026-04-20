@@ -1,0 +1,56 @@
+{
+  "zh":{
+    "patents": [
+      {
+        "id": "p1",
+        "title": "一种高并发前端渲染优化方法",
+        "desc": "基于虚拟 DOM 差异量化分析的专利，大幅提升工业数据大屏渲染帧率。",
+        "tag": "发明专利",
+        "link": "https://patents.google.com/"
+      },
+      {
+        "id": "p2",
+        "title": "MES系统状态可视化交互模型",
+        "desc": "针对制造业执行系统的前端交互逻辑重构方案。",
+        "tag": "实用新型",
+        "link": "#"
+      }
+    ],
+    "certificates": [
+      {
+        "id": "c1",
+        "title": "高级前端开发工程师认证",
+        "desc": "掌握复杂架构设计与性能调优能力。",
+        "tag": "专业证书",
+        "link": "#"
+      }
+    ]
+  },
+  "en":{
+    "patents": [
+      {
+        "id": "p1",
+        "title": "A high concurrency front-end rendering optimization method",
+        "desc": "基于虚拟 DOM 差异量化分析的专利，大幅提升工业数据大屏渲染帧率。",
+        "tag": "发明专利",
+        "link": "https://patents.google.com/"
+      },
+      {
+        "id": "p2",
+        "title": "MES系统状态可视化交互模型",
+        "desc": "针对制造业执行系统的前端交互逻辑重构方案。",
+        "tag": "实用新型",
+        "link": "#"
+      }
+    ],
+    "certificates": [
+      {
+        "id": "c1",
+        "title": "高级前端开发工程师认证",
+        "desc": "掌握复杂架构设计与性能调优能力。",
+        "tag": "专业证书",
+        "link": "#"
+      }
+    ]
+  }
+}

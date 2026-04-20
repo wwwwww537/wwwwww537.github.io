@@ -1,0 +1,162 @@
+{
+  "zh": [
+    {
+      "id": "0",
+      "name": "Jules Console",
+      "status": "COMPLETED",
+      "desc": "基于 Astro 打造的个人终端风格站点系统，集成了极客像素 UI 与多语言支持。",
+      "category": "Industrial Middleware",
+      "tech": ["Astro", "TypeScript", "Tailwind"],
+      "link": "https://github.com/wwwwww537/wwwwww537.github.io",
+      "details": {
+        "abstract": "本系统作为工厂生产的核心大脑，实现了从订单下达到成品入库的全链路数字化。核心难点在于处理 MES BillStatus 的复杂状态机，以及支撑高并发的 IOT 设备报文解析。",
+        "tech": [
+          { "name": ".NET Core", "version": "v8.0" },
+          { "name": "MQTT.net", "version": "v4.3" },
+          { "name": "SQL Server", "version": "2022" }
+        ],
+        "metrics": [
+          { "label": "TPS (Throughput)", "value": "1.2k/s", "percent": 85 },
+          { "label": "Uptime", "value": "99.9%", "percent": 99 }
+        ],
+        "architecture_ascii": "[Device] --(MQTT)--> [Parser] --(Queue)--> [DB_Sync]\n                             |\n                             +-->(WebSocket)--> [Live_Monitor]",
+        "features": [
+          { "title": "多协议支持", "desc": "原生支持 OPC-UA, Modbus 及自定义 TCP 报文。" },
+          { "title": "单据自动流转", "desc": "基于业务逻辑的 MES BillStatus 自动触发引擎。" }
+        ]
+      }
+    },
+    {
+      "id": "1",
+      "name": "MES 数据采集系统",
+      "status": "MAINTAINING",
+      "desc": "工业级数据中间件，负责高并发设备报文解析与 SQL 视图同步，优化了物料流转效率。",
+      "category": "Industrial Middleware",
+      "tech": ["C#", ".NET Core", "SQL Server"],
+      "link": "#",
+      "details": {
+        "abstract": "本系统作为工厂生产的核心大脑，实现了从订单下达到成品入库的全链路数字化。核心难点在于处理 MES BillStatus 的复杂状态机，以及支撑高并发的 IOT 设备报文解析。",
+        "tech": [
+          { "name": ".NET Core", "version": "v8.0" },
+          { "name": "MQTT.net", "version": "v4.3" },
+          { "name": "SQL Server", "version": "2022" }
+        ],
+        "metrics": [
+          { "label": "TPS (Throughput)", "value": "1.2k/s", "percent": 85 },
+          { "label": "Uptime", "value": "99.9%", "percent": 99 }
+        ],
+        "architecture_ascii": "[Device] --(MQTT)--> [Parser] --(Queue)--> [DB_Sync]\n                             |\n                             +-->(WebSocket)--> [Live_Monitor]",
+        "features": [
+          { "title": "多协议支持", "desc": "原生支持 OPC-UA, Modbus 及自定义 TCP 报文。" },
+          { "title": "单据自动流转", "desc": "基于业务逻辑的 MES BillStatus 自动触发引擎。" }
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "name": "Live2D 交互插件",
+      "status": "ACTIVE",
+      "desc": "为现代网页框架定制的看板娘组件，支持动态缩放与状态持久化。",
+      "category": "Industrial Middleware",
+      "tech": ["JavaScript", "Canvas", "CSS"],
+      "link": "#",
+      "details": {
+        "abstract": "本系统作为工厂生产的核心大脑，实现了从订单下达到成品入库的全链路数字化。核心难点在于处理 MES BillStatus 的复杂状态机，以及支撑高并发的 IOT 设备报文解析。",
+        "tech": [
+          { "name": ".NET Core", "version": "v8.0" },
+          { "name": "MQTT.net", "version": "v4.3" },
+          { "name": "SQL Server", "version": "2022" }
+        ],
+        "metrics": [
+          { "label": "TPS (Throughput)", "value": "1.2k/s", "percent": 85 },
+          { "label": "Uptime", "value": "99.9%", "percent": 99 }
+        ],
+        "architecture_ascii": "[Device] --(MQTT)--> [Parser] --(Queue)--> [DB_Sync]\n                             |\n                             +-->(WebSocket)--> [Live_Monitor]",
+        "features": [
+          { "title": "多协议支持", "desc": "原生支持 OPC-UA, Modbus 及自定义 TCP 报文。" },
+          { "title": "单据自动流转", "desc": "基于业务逻辑的 MES BillStatus 自动触发引擎。" }
+        ]
+      }
+    }
+  ],
+  "en": [
+    {
+      "id": "0",
+      "name": "Jules Console",
+      "status": "COMPLETED",
+      "desc": "A terminal-style personal site system built with Astro, featuring geek pixel UI and i18n support.",
+      "category": "Industrial Middleware",
+      "tech": ["Astro", "TypeScript", "Tailwind"],
+      "link": "https://github.com/wwwwww537/wwwwww537.github.io",
+      "details": {
+        "abstract": "本系统作为工厂生产的核心大脑，实现了从订单下达到成品入库的全链路数字化。核心难点在于处理 MES BillStatus 的复杂状态机，以及支撑高并发的 IOT 设备报文解析。",
+        "tech": [
+          { "name": ".NET Core", "version": "v8.0" },
+          { "name": "MQTT.net", "version": "v4.3" },
+          { "name": "SQL Server", "version": "2022" }
+        ],
+        "metrics": [
+          { "label": "TPS (Throughput)", "value": "1.2k/s", "percent": 85 },
+          { "label": "Uptime", "value": "99.9%", "percent": 99 }
+        ],
+        "architecture_ascii": "[Device] --(MQTT)--> [Parser] --(Queue)--> [DB_Sync]\n                             |\n                             +-->(WebSocket)--> [Live_Monitor]",
+        "features": [
+          { "title": "多协议支持", "desc": "原生支持 OPC-UA, Modbus 及自定义 TCP 报文。" },
+          { "title": "单据自动流转", "desc": "基于业务逻辑的 MES BillStatus 自动触发引擎。" }
+        ]
+      }
+    },
+    {
+      "id": "1",
+      "name": "MES Data Integration",
+      "status": "MAINTAINING",
+      "desc": "Industrial middleware for high-concurrency device messaging and SQL view synchronization.",
+      "category": "Industrial Middleware",
+      "tech": ["C#", ".NET Core", "SQL Server"],
+      "link": "#",
+      "details": {
+        "abstract": "本系统作为工厂生产的核心大脑，实现了从订单下达到成品入库的全链路数字化。核心难点在于处理 MES BillStatus 的复杂状态机，以及支撑高并发的 IOT 设备报文解析。",
+        "tech": [
+          { "name": ".NET Core", "version": "v8.0" },
+          { "name": "MQTT.net", "version": "v4.3" },
+          { "name": "SQL Server", "version": "2022" }
+        ],
+        "metrics": [
+          { "label": "TPS (Throughput)", "value": "1.2k/s", "percent": 85 },
+          { "label": "Uptime", "value": "99.9%", "percent": 99 }
+        ],
+        "architecture_ascii": "[Device] --(MQTT)--> [Parser] --(Queue)--> [DB_Sync]\n                             |\n                             +-->(WebSocket)--> [Live_Monitor]",
+        "features": [
+          { "title": "多协议支持", "desc": "原生支持 OPC-UA, Modbus 及自定义 TCP 报文。" },
+          { "title": "单据自动流转", "desc": "基于业务逻辑的 MES BillStatus 自动触发引擎。" }
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "name": "Live2D Interaction",
+      "status": "ACTIVE",
+      "desc": "Customized Waifu component for modern web frameworks with dynamic scaling support.",
+      "category": "Industrial Middleware",
+      "tech": ["JavaScript", "Canvas", "CSS"],
+      "link": "#",
+      "details": {
+        "abstract": "本系统作为工厂生产的核心大脑，实现了从订单下达到成品入库的全链路数字化。核心难点在于处理 MES BillStatus 的复杂状态机，以及支撑高并发的 IOT 设备报文解析。",
+        "tech": [
+          { "name": ".NET Core", "version": "v8.0" },
+          { "name": "MQTT.net", "version": "v4.3" },
+          { "name": "SQL Server", "version": "2022" }
+        ],
+        "metrics": [
+          { "label": "TPS (Throughput)", "value": "1.2k/s", "percent": 85 },
+          { "label": "Uptime", "value": "99.9%", "percent": 99 }
+        ],
+        "architecture_ascii": "[Device] --(MQTT)--> [Parser] --(Queue)--> [DB_Sync]\n                             |\n                             +-->(WebSocket)--> [Live_Monitor]",
+        "features": [
+          { "title": "多协议支持", "desc": "原生支持 OPC-UA, Modbus 及自定义 TCP 报文。" },
+          { "title": "单据自动流转", "desc": "基于业务逻辑的 MES BillStatus 自动触发引擎。" }
+        ]
+      }
+    }
+  ]
+}

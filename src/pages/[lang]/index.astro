@@ -1,6 +1,10 @@
 ---
 // src/pages/[lang]/index.astro
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import '../../styles/home.css';
+
+import logsData from '../../data/logs.json';
 
 export function getStaticPaths() {
   return [
@@ -8,8 +12,17 @@ export function getStaticPaths() {
     { params: { lang: 'en' } }
   ];
 }
+const getRelativePath = (path: string) => `/${lang}${path}`;
 
 const { lang } = Astro.params;
+const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+
+// 各自读取对应的语言切片
+const logs = logsData[currentLang];
+
+// 获取当前语言的项目，并按需排序或截取
+const allProjects = await getCollection('projects', ({ data }) => data.lang === lang);
+const displayProjects = allProjects.slice(0, 3); // 首页仅展示前3个
 ---
 
 <Layout title="Wwwwww537 - Jules Console" lang={lang as 'zh' | 'en'}>
@@ -42,13 +55,13 @@ const { lang } = Astro.params;
       <div class="jules-card p-4">
         <h2 class="text-xs text-[var(--text-secondary)] mb-3 px-2">/// MENU</h2>
         <nav class="flex flex-col gap-2">
-          <a href="/schedule" class="jules-nav-item group">
+          <a href={getRelativePath('/schedule')} class="jules-nav-item group">
             <span>📅 Schedule</span> <span class="opacity-0 group-hover:opacity-100 transition-opacity">-></span>
           </a>
-          <a href="/boardgames" class="jules-nav-item group">
+          <a href={getRelativePath('/boardgames')} class="jules-nav-item group">
             <span>🎲 Boardgames</span> <span class="opacity-0 group-hover:opacity-100 transition-opacity">-></span>
           </a>
-          <a href="/awards" class="jules-nav-item group">
+          <a href={getRelativePath('/awards')} class="jules-nav-item group">
             <span>🏆 Awards</span> <span class="opacity-0 group-hover:opacity-100 transition-opacity">-></span>
           </a>
         </nav>
@@ -85,20 +98,29 @@ const { lang } = Astro.params;
         <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
           <span class="text-[var(--accent-color)]">#</span> Systems
         </h3>
-        
-        <div class="jules-inner-card group">
-          <div class="flex justify-between items-start mb-2">
-            <h4 class="text-xl font-bold group-hover:text-[var(--accent-color)] transition-colors">MES (制造执行系统)</h4>
-            <span class="text-xs px-2 py-1 rounded border border-[var(--text-primary)] dark:border-[rgba(255,255,255,0.4)] pixel-text font-bold">ACTIVE</span>
-          </div>
-          <p class="text-[var(--text-secondary)] text-sm mb-4 leading-relaxed">
-            工业级数据管理平台。负责处理复杂的工艺单据状态流转，高并发设备报文解析与系统对接。
-          </p>
-          <div class="flex gap-4 text-xs text-[var(--text-secondary)] pixel-text">
-            <span>> Arch: .NET Core</span>
-            <span>> DB: SQL Views</span>
-          </div>
-        </div>
+        {displayProjects.map((proj) => (
+          <a href={`/${lang}/projects/${proj.id}`} class="block group">
+            <div class="jules-inner-card group-hover:border-[var(--text-primary)] transition-all">
+              <div class="flex justify-between items-start mb-2">
+                <h4 class="text-xl font-bold group-hover:text-[var(--accent-color)] transition-colors font-pixel">
+                  {proj.data.title}
+                </h4>
+                <span class="text-[10px] px-2 py-0.5 border-2 border-[var(--text-primary)] font-bold font-pixel">
+                  {proj.data.status}
+                </span>
+              </div>
+              <p class="text-[var(--text-secondary)] text-sm mb-4 leading-relaxed line-clamp-2">
+                {proj.data.desc}
+              </p>
+              <div class="flex gap-4 text-[10px] text-[var(--text-secondary)] font-mono uppercase">
+                <span>> ARCH: {proj.data.tech[0]}</span>
+                <span class="text-[var(--accent-color)] group-hover:translate-x-1 transition-transform">
+                  [ ACCESS_DATA ] ->
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
       </section>
 
       <section>
@@ -110,28 +132,14 @@ const { lang } = Astro.params;
         </div>
         
         <div class="pl-2 space-y-8">
-          
-          <div class="relative pl-6 jules-log-item">
-            <div class="absolute left-0 top-1.5 w-2 h-2 rounded-full border-2 border-[var(--accent-color)] bg-[var(--surface-color)] jules-dot"></div>
-            <div class="text-xs text-[var(--accent-color)] mb-1 pixel-text">2026.04.20</div>
-            <h4 class="font-bold">Astro 控制台重构 (Jules Style)</h4>
-            <p class="text-sm text-[var(--text-secondary)] mt-1">引入 DotGothic16 字体，切换至极客像素风，优化左右视窗排版。</p>
-          </div>
-
-          <div class="relative pl-6 jules-log-item">
-            <div class="absolute left-0 top-1.5 w-2 h-2 rounded-full border-2 border-[var(--text-primary)] dark:border-white/50 bg-[var(--surface-color)] jules-dot"></div>
-            <div class="text-xs text-[var(--text-secondary)] mb-1 pixel-text">2026.04.18</div>
-            <h4 class="font-bold">上周末桌游局账单已上传</h4>
-            <p class="text-sm text-[var(--text-secondary)] mt-1">本次阿瓦隆面杀费用明细及发票记录已归档，请前往私密模块对账。</p>
-          </div>
-
-          <div class="relative pl-6 jules-log-item">
-            <div class="absolute left-0 top-1.5 w-2 h-2 rounded-full border-2 border-[var(--text-primary)] dark:border-white/50 bg-[var(--surface-color)] jules-dot"></div>
-            <div class="text-xs text-[var(--text-secondary)] mb-1 pixel-text">2026.04.10</div>
-            <h4 class="font-bold">Node.js 部署冲突排雷</h4>
-            <p class="text-sm text-[var(--text-secondary)] mt-1">记录 GitHub Actions 中 Node v20/v22 的冲突解决过程。</p>
-          </div>
-
+          {logs.map((log) => (
+            <div class="relative pl-8 timeline-line">
+              <div class={`absolute left-0 top-1.5 pixel-dot border-2 bg-[var(--surface-color)] ${log.type === 'primary' ? 'border-[var(--accent-color)]' : 'border-[var(--text-primary)]'}`}></div>
+              <div class="text-xs text-[var(--accent-color)] mb-1 pixel-text">{log.date}</div>
+              <h4 class="font-bold">{log.title}</h4>
+              <p class="text-sm text-[var(--text-secondary)] mt-1">{log.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 

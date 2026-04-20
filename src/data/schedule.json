@@ -1,0 +1,20 @@
+{
+  "zh": {
+    "current_month": "2026.04",
+    "events": [
+      { "date": "2026-04-05", "title": "项目里程碑 A", "type": "work", "desc": "MES 系统 V5 核心逻辑冻结" },
+      { "date": "2026-04-12", "title": "桌游局：阿瓦隆", "type": "play", "desc": "老地方，8人预约" },
+      { "date": "2026-04-20", "title": "Console 重构计划", "type": "work", "desc": "完成所有样式像素化及数据分离" },
+      { "date": "2026-04-25", "title": "技术分享会", "type": "meeting", "desc": "主题：Astro 实战经验总结" }
+    ]
+  },
+  "en": {
+    "current_month": "2026.04",
+    "events": [
+      { "date": "2026-04-05", "title": "Milestone A", "type": "work", "desc": "MES V5 core logic freeze" },
+      { "date": "2026-04-12", "title": "Boardgame: Avalon", "type": "play", "desc": "8 players, usual place" },
+      { "date": "2026-04-20", "title": "Console Refactor", "type": "work", "desc": "Complete pixel-style and data isolation" },
+      { "date": "2026-04-25", "title": "Tech Talk", "type": "meeting", "desc": "Topic: Astro best practices" }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+/* 局部滚动容器：限制时间轴高度 */
+.log-scroll-container {
+  height: 300px;
+  overflow-y: auto;
+  padding-right: 1rem;
+  scrollbar-width: thin;
+}
+
+/* 像素风菱形点 */
+.pixel-dot {
+  transform: rotate(45deg);
+  width: 8px;
+  height: 8px;
+}
+
+.timeline-line::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 1.5rem;
+  bottom: -2rem;
+  width: 2px;
+  border-left: 2px dashed var(--border-color);
+}
+.timeline-item { border-left: 2px solid transparent; }
+.timeline-item::before {
+  content: ''; position: absolute; left: 3px; top: 14px; bottom: -32px;
+  width: 2px; border-left: 2px dashed var(--border-color); z-index: 0;
+}
+.timeline-item:last-child::before { display: none; }

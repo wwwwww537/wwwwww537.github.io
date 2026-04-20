@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import bookmarksData from '../../data/bookmarks.json';
+import '../../styles/bookmarks.css';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+}
+
+const { lang } = Astro.params;
+const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+const categories = bookmarksData[currentLang];
+---
+
+<Layout title={currentLang === 'zh' ? '外部节点 - Jules Console' : 'External Nodes - Jules Console'} lang={currentLang}>
+  <div class="jules-container max-w-6xl mx-auto pt-6 pb-20 px-4">
+    
+    <header class="mb-10">
+      <div class="terminal-loader mb-2">
+        <p>> INITIALIZING_ROUTING_TABLE...</p>
+        <p>> FETCHING_EXTERNAL_NODES...</p>
+      </div>
+      <h1 class="text-4xl font-bold font-pixel uppercase">
+        {currentLang === 'zh' ? '外部网络节点' : 'EXTERNAL_NODES'}
+      </h1>
+    </header>
+
+    <div class="grep-search-box">
+      <span class="text-[var(--accent-color)]">></span>
+      <span class="opacity-70 font-bold">grep -i</span>
+      <span class="text-green-500">"</span>
+      <input type="text" id="nodeSearch" placeholder={currentLang === 'zh' ? '输入关键字搜索节点...' : 'Search nodes...'} autocomplete="off" />
+      <span class="text-green-500">"</span>
+      <span class="grep-cursor"></span>
+    </div>
+
+    <div id="bookmarks-container">
+      {categories.map(category => (
+        <section class="bookmark-category">
+          <div class="bookmark-category-header">
+            <h2 class="text-2xl font-bold font-pixel">{category.title}</h2>
+            <span class="font-mono text-xs opacity-50 bg-[var(--text-primary)] text-[var(--bg-color)] px-2 py-0.5">
+              {category.category}
+            </span>
+          </div>
+
+          <div class="bookmark-grid" data-category={category.category}>
+            {category.links.map(link => (
+              <a href={link.url} target="_blank" rel="noopener noreferrer" class="bookmark-card">
+                <div class="bookmark-icon">{link.icon}</div>
+                <div class="bookmark-content">
+                  <h3 class="bookmark-title">{link.name}</h3>
+                  <p class="bookmark-desc">{link.desc}</p>
+                </div>
+                <div class="absolute bottom-2 right-2 text-[10px] font-pixel opacity-30">
+                  ->
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <div id="no-results" class="hidden text-center p-10 border-2 border-dashed border-[var(--border-color)] font-mono opacity-50">
+      > NO_NODES_FOUND_MATCHING_YOUR_QUERY
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('nodeSearch') as HTMLInputElement;
+      const categories = document.querySelectorAll('.bookmark-category');
+      const noResults = document.getElementById('no-results');
+
+      if (!searchInput) return;
+
+      searchInput.addEventListener('input', (e) => {
+        const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
+        let anyVisible = false;
+
+        categories.forEach(category => {
+          const cat = category as HTMLElement;
+          const cards = cat.querySelectorAll('.bookmark-card');
+          let hasVisibleCard = false;
+
+          cards.forEach(card => {
+            const cardEl = card as HTMLElement;
+            // 获取卡片内的文本（标题+描述）
+            const textContent = cardEl.textContent?.toLowerCase() || '';
+            
+            if (textContent.includes(query)) {
+              cardEl.style.display = 'flex';
+              hasVisibleCard = true;
+            } else {
+              cardEl.style.display = 'none';
+            }
+          });
+
+          // 如果该分类下没有可见的卡片，隐藏整个分类头部
+          if (hasVisibleCard) {
+            cat.style.display = 'block';
+            anyVisible = true;
+          } else {
+            cat.style.display = 'none';
+          }
+        });
+
+        // 控制"无结果"提示的显示与隐藏
+        if (noResults) {
+          noResults.style.display = anyVisible ? 'none' : 'block';
+        }
+      });
+    });
+  </script>
+</Layout>

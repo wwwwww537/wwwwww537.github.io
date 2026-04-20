@@ -1,0 +1,14 @@
+{
+  "zh": [
+    { "date": "2026.04.20", "title": "Astro 控制台重构", "desc": "引入极客像素风，优化排版。", "type": "primary" },
+    { "date": "2026.04.18", "title": "桌游局账单已上传", "desc": "阿瓦隆费用明细已归档。", "type": "secondary" },
+    { "date": "2026.04.10", "title": "Node.js 部署冲突排雷", "desc": "解决 GitHub Actions 版本冲突。", "type": "secondary" },
+    { "date": "2026.04.05", "title": "系统初始化完成", "desc": "v4.0.0 核心模块上线。", "type": "secondary" }
+  ],
+  "en": [
+    { "date": "2026.04.20", "title": "Astro Refactoring", "desc": "Added geek pixel style and layout optimization.", "type": "primary" },
+    { "date": "2026.04.18", "title": "Boardgame Bills", "desc": "Avalon session expenses archived.", "type": "secondary" },
+    { "date": "2026.04.10", "title": "Node.js Deploy Fix", "desc": "Resolved GH Actions version conflicts.", "type": "secondary" },
+    { "date": "2026.04.05", "title": "System Initialized", "desc": "v4.0.0 core modules online.", "type": "secondary" }
+  ]
+}
