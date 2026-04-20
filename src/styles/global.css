@@ -1,139 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&family=Share+Tech+Mono&display=swap');
 @import "tailwindcss";
+/* 引入 Jules 风格所需字体：DotGothic16(像素装饰) / VT323(复古终端英文字母) / Share Tech Mono(备用) */
 
-/* src/styles/global.css */
 :root {
-  /* 护眼 Light 模式：采用微醺灰/ Slate 50，减少对比度 */
+  /* ==========================================
+     颜色主题 (保留你原来的护眼配色)
+     ========================================== */
   --bg-color: #f8fafc; 
-  --surface-color: #ffffff; /* 纯白底框 */
+  --surface-color: #ffffff;
   --accent-color: #0369a1; 
-  --text-primary: #334155; /* 深灰替代纯黑，护眼 */
+  --text-primary: #334155; 
   --text-secondary: #64748b;
   --border-color: #e2e8f0;
+
+  /* ==========================================
+     Jules 终端排版与阴影变量
+     ========================================== */
+  --font-pixel: 'DotGothic16', sans-serif;
+  --font-mono: 'VT323', 'Share Tech Mono', ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+  
+  --jules-shadow-size: 6px;
+  --jules-shadow-color: rgba(0, 0, 0, 0.08); /* 极度柔和的硬阴影 */
 }
 
 html[data-theme='dark'] {
-  --bg-color: #020617; /* 更深邃的蓝黑 */
-  --surface-color: #0f172a; /* 稍微亮一点的容器 */
+  --bg-color: #020617; 
+  --surface-color: #0f172a; 
   --accent-color: #06b6d4;
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --border-color: #1e293b;
+
+  --jules-shadow-color: rgba(0, 0, 0, 0.3); /* 暗黑模式下加深硬阴影 */
 }
 
-/* 页面背景：网格纹理效果 */
+/* ==========================================
+   全局基础重置
+   ========================================== */
 body {
   transition: background-color 0.5s ease, color 0.5s ease;
   background-color: var(--bg-color);
+  /* 保留网格纹理，完美契合终端风 */
   background-image: 
     linear-gradient(var(--border-color) 1px, transparent 1px),
     linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
   background-size: 40px 40px;
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, sans-serif;
   margin: 0;
   min-height: 100vh;
+  
+  /* 基础正文使用高可读性终端等宽字体 */
+  font-family: var(--font-mono);
+  line-height: 1.6;
 }
 
-/* 炫酷的滚动条 */
+/* 终端风格滚动条：去除圆角和发光，回归硬核块状 */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-color);
+  border-left: 2px solid var(--border-color);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-color);
-  border-radius: 10px;
-  box-shadow: 0 0 10px var(--accent-glow);
+  background: var(--text-primary);
+  border: 1px solid var(--bg-color);
 }
 
-/* 统一卡片基础 */
-.tech-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem;
+/* 字体分配与字间距调优 */
+.jules-container {
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+h1, h2, h3, h4, h5, h6,
+.jules-btn, .jules-btn-primary,
+.jules-tag, .jules-nav-item,
+.pixel-text {
+  font-family: var(--font-pixel);
+  letter-spacing: 1.5px; /* 给像素字体增加呼吸感，防止英文字母黏连 */
 }
 
-/* 标准化卡片样式 */
-.cyber-card {
-  background: var(--surface-color);
-  border: 1px solid var(--border-color);
+/* ==========================================
+   Jules 核心 UI 组件库 (全站复用)
+   ========================================== */
+
+/* 主卡片：2px 细边框，大圆角，扁平偏移阴影 */
+.jules-card {
+  background-color: var(--surface-color);
+  border: 2px solid var(--text-primary);
+  border-radius: 16px;
+  box-shadow: 0 var(--jules-shadow-size) 0 0 var(--jules-shadow-color);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+html[data-theme='dark'] .jules-card {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* 内嵌卡片：无边框，依靠微弱背景色差划分 */
+.jules-inner-card {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 2px solid transparent;
   border-radius: 12px;
-  box-shadow: var(--card-shadow);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+html[data-theme='dark'] .jules-inner-card { background-color: rgba(255, 255, 255, 0.03); }
+.jules-inner-card:hover {
+  border-color: var(--text-primary);
+  background-color: var(--surface-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 0 rgba(0,0,0,0.05);
+}
+html[data-theme='dark'] .jules-inner-card:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 0 0 rgba(0,0,0,0.3);
 }
 
-.cyber-card:hover {
+/* 标签：直角矩形底框 */
+.jules-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.95rem;
+  border: 2px solid var(--text-primary);
+  border-radius: 9999px;
+  background-color: var(--surface-color);
+  box-shadow: 0 2px 0 0 var(--text-primary);
+  font-weight: bold;
+}
+html[data-theme='dark'] .jules-tag {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 交互按钮：点击下压效果 */
+.jules-btn {
+  display: block;
+  text-align: center;
+  border: 2px solid var(--text-primary);
+  border-radius: 10px;
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 0 0 var(--text-primary);
+  transition: transform 0.1s, box-shadow 0.1s;
+  cursor: pointer;
+}
+html[data-theme='dark'] .jules-btn {
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 0 0 rgba(255, 255, 255, 0.3);
+}
+.jules-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.jules-btn-primary {
+  display: block;
+  text-align: center;
+  border: 2px solid var(--text-primary);
+  border-radius: 10px;
+  background-color: var(--text-primary);
+  color: var(--bg-color);
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 0 0 rgba(0,0,0,0.5);
+  transition: transform 0.1s, box-shadow 0.1s;
+  cursor: pointer;
+}
+html[data-theme='dark'] .jules-btn-primary {
+  background-color: var(--accent-color);
   border-color: var(--accent-color);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  color: #000;
+}
+.jules-btn-primary:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 0 transparent;
 }
 
-/* src/styles/global.css 追加加载动画样式 */
-.loader-wrapper {
-  position: fixed;
-  inset: 0;
-  background-color: var(--bg-color); /* 纯粹跟随系统主题的背景色 */
-  z-index: 9999;
+/* 侧边栏导航选项 */
+.jules-nav-item {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  transition: opacity 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), visibility 0.6s;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.jules-nav-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  transform: translateX(4px);
+}
+html[data-theme='dark'] .jules-nav-item:hover { background-color: rgba(255, 255, 255, 0.1); }
+
+/* 时间线穿梭线 */
+.jules-log-item { border-left: 2px solid transparent; }
+.jules-log-item::before {
+  content: ''; position: absolute; left: 3px; top: 14px; bottom: -32px;
+  width: 2px; border-left: 2px dashed rgba(0,0,0,0.15); z-index: 0;
+}
+html[data-theme='dark'] .jules-log-item::before { border-left-color: rgba(255,255,255,0.15); }
+.jules-log-item:last-child::before { display: none; }
+.jules-dot { z-index: 1; }
+
+/* ==========================================
+   全局组件加载器 (Loader) 与其他
+   ========================================== */
+.loader-wrapper {
+  position: fixed; inset: 0;
+  background-color: var(--bg-color); 
+  z-index: 9999; display: flex; justify-content: center; align-items: center;
+  transition: opacity 0.6s, visibility 0.6s;
 }
 
 .loader-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
+  display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
 }
 
-/* 赛博旋转环 */
+/* 改造赛博环为复古终端加载环 */
 .cyber-ring {
-  width: 60px;
-  height: 60px;
-  border: 3px solid var(--border-color);
+  width: 60px; height: 60px;
+  border: 4px solid var(--border-color);
   border-top-color: var(--accent-color);
-  border-radius: 50%;
-  animation: cyber-spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-  box-shadow: 0 0 15px var(--accent-glow);
+  /* 移除发光，保持硬朗 */
+  animation: cyber-spin 1s linear infinite;
 }
 
 .loading-text {
-  font-family: 'Courier New', Courier, monospace;
-  color: var(--accent-color);
-  font-weight: bold;
-  letter-spacing: 2px;
+  font-family: var(--font-pixel);
+  color: var(--text-primary);
+  font-weight: bold; letter-spacing: 2px;
 }
 
-.cursor {
-  animation: blink 1s step-end infinite;
-}
+.cursor { animation: blink 1s step-end infinite; }
+@keyframes cyber-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.loader-wrapper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-@keyframes cyber-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+html.loading body { visibility: hidden; }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* 隐藏动画 */
-.loader-wrapper.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* src/styles/global.css */
-/* 强制在样式加载前隐藏主体（如果需要） */
-html.loading body {
-  visibility: hidden;
-}
-
-/* 解决 4：Live2D 的顽固变大问题通常是因为 transform 继承 */
-#waifu-tips {
-  font-size: 14px !important; /* 锁定文字大小 */
-}
+/* 看板娘文本锁定 */
+#waifu-tips { font-size: 14px !important; }
