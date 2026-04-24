@@ -3,6 +3,7 @@
     {
       "id": "bg-avalon",
       "name": "阿瓦隆 (Avalon)",
+      "cover": "",
       "status": "LENT_OUT",
       "lentTo": "Jack (前端组)",
       "players": "5-10 人",
@@ -14,6 +15,7 @@
     {
       "id": "bg-tfm",
       "name": "重塑火星 (Terraforming Mars)",
+      "cover": "",
       "status": "IN_LIBRARY",
       "lentTo": null,
       "players": "1-5 人",
@@ -25,6 +27,7 @@
     {
       "id": "bg-splendor",
       "name": "璀璨宝石 (Splendor)",
+      "cover": "",
       "status": "IN_LIBRARY",
       "lentTo": null,
       "players": "2-4 人",
@@ -38,6 +41,7 @@
     {
       "id": "bg-avalon",
       "name": "The Resistance: Avalon",
+      "cover": "",
       "status": "LENT_OUT",
       "lentTo": "Jack (Frontend)",
       "players": "5-10 P",
@@ -49,6 +53,7 @@
     {
       "id": "bg-tfm",
       "name": "Terraforming Mars",
+      "cover": "",
       "status": "IN_LIBRARY",
       "lentTo": null,
       "players": "1-5 P",
@@ -60,6 +65,7 @@
     {
       "id": "bg-splendor",
       "name": "Splendor",
+      "cover": "",
       "status": "IN_LIBRARY",
       "lentTo": null,
       "players": "2-4 P",

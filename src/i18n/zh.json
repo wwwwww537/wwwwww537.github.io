@@ -1,10 +1,29 @@
 {
+  "common.viewAll": "查看全部",
+  "common.all": "全部",
+  "common.close": "关闭", 
   "nav.home": "首页",
-  "nav.awards": "荣誉看板",
-  "nav.blog": "博客",
-  "hero.title": "欢迎来到我的个人空间",
-  "hero.desc": "前端工程师 / 高级交互设计",
-  "awards.desc": "这里展示了我获得的专利授权和专业证书。",
+  "nav.blog": "笔记",
+  "nav.projects": "项目",
+  "nav.awards": "荣誉",
+  "nav.schedule": "行程 & 活动",
+  "nav.boardgames": "桌游墙",
+  "nav.bookmarks": "导航站",
+  "nav.search": "系统检索...",
+
+  "home.profile.status": "在线",
+  "home.profile.title": "软件工程师.",
+  "home.profile.subTitle": "桌游菜鸟.",
+
+  "blog.title": "笔记",
+  "blog.publish": "> 创建时间",
+  "blog.date": "> 日期",
+  "blog.dir": "> 目录",
+
+  "awards.desc": "获得的专利授权和专业证书。",
   "awards.patents": "专利授权",
-  "awards.certs": "专业证书"
+  "awards.certs": "专业证书",
+
+  "bookmarks.title": "外部网络节点",
+  "bookmarks.search": "输入关键字搜索节点"
 }

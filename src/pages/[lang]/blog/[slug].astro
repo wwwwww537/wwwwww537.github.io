@@ -1,9 +1,9 @@
 ---
 // src/pages/[lang]/blog/[slug].astro
 import { getCollection, render } from 'astro:content';
-import Layout from '../../../layouts/Layout.astro';
 import { useTranslations } from '../../../i18n/utils';
-import '../../../styles/blog-detail.css'; // 引入详情页专属像素样式
+import Layout from '../../../layouts/Layout.astro';
+import '../../../styles/blog-detail.css';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -21,10 +21,11 @@ const { lang } = Astro.params;
 const { post } = Astro.props;
 
 const { Content } = await render(post);
-const t = useTranslations(lang as 'zh' | 'en');
+const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+const t = useTranslations(currentLang);
 ---
 
-<Layout title={`${post.data.title} - Jules Console`} lang={lang as 'zh' | 'en'}>
+<Layout title={`${post.data.title} - Jules Console`} lang={currentLang}>
   
   <article class="jules-container max-w-4xl mx-auto pt-6 pb-20 px-4">
     
@@ -39,15 +40,15 @@ const t = useTranslations(lang as 'zh' | 'en');
       
       <div class="blog-meta">
         <span class="date">
-          <span class="text-[var(--accent-color)] font-pixel">DATE:</span> 
+          <span class="text-[var(--accent-color)] font-pixel">{t('blog.date')}:</span> 
           {post.data.pubDate.toLocaleDateString()}
         </span>
         <span class="category">
-          <span class="text-[var(--accent-color)] font-pixel">DIR:</span> 
+          <span class="text-[var(--accent-color)] font-pixel">{t('blog.dir')}:</span> 
           /{post.data.category}
         </span>
         <div class="blog-tags">
-          {post.data.tags.map((tag: string) => <span class="blog-tag">#{tag}</span>)}
+          {post.data.tech.map((tech: string) => <span class="blog-tag">#{tech}</span>)}
         </div>
       </div>
     </header>

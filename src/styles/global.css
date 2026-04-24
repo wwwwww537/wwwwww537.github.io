@@ -14,6 +14,8 @@
   
   --jules-shadow-size: 6px;
   --jules-shadow-color: rgba(0, 0, 0, 0.15); 
+
+  --dream-color: rgb(54 163 217 / 60%) 90%; 
 }
 
 html[data-theme='dark'] {
@@ -23,7 +25,9 @@ html[data-theme='dark'] {
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --border-color: #1e293b;
-  --jules-shadow-color: rgba(0, 0, 0, 0.5); 
+  --jules-shadow-color: rgba(255, 255, 255, 0.3); 
+
+  --dream-color: rgb(113 24 226 / 60%); 
 }
 
 body {
@@ -135,3 +139,45 @@ html[data-theme='dark'] .jules-tag { border-color: rgba(255, 255, 255, 0.3); }
 html[data-theme='dark'] .jules-nav-item:hover { background-color: var(--accent-color); color: #000; }
 
 .jules-dot { z-index: 1; border-radius: 0; transform: rotate(45deg); /* 菱形像素点 */ }
+
+@property --bg-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin-gradient {
+  to { --bg-angle: 360deg; }
+}
+
+.data-stream-border {
+  position: relative;
+  /* 去除原本的基础边框，用伪元素代替 */
+  border: none !important; 
+  z-index: 1;
+}
+
+/* 内部内容区域遮挡 */
+.data-stream-border::before {
+  content: "";
+  position: absolute;
+  inset: 3px; /* 这里的 3px 就是边框的厚度 */
+  background: var(--surface-color);
+  z-index: -1;
+}
+
+/* 流光背景 */
+.data-stream-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: conic-gradient(
+    from var(--bg-angle),
+    var(--border-color) 0%,
+    var(--border-color) 70%,
+    var(--dream-color) 90%, /* 数据流的高亮尖端 */
+    var(--border-color) 100%
+  );
+  animation: spin-gradient 4s linear infinite;
+}

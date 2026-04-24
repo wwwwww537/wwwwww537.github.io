@@ -1,11 +1,11 @@
 ---
 // src/layouts/Layout.astro
 import { ClientRouter } from 'astro:transitions';
+import { useTranslations } from '../i18n/utils';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import LangToggle from '../components/LangToggle.astro';
 import SearchModal from '../components/SearchModal.astro';
 import Waifu from '../components/Waifu.astro';
-import { useTranslations } from '../i18n/utils';
 import '../styles/global.css';
 import '../styles/layout.css';
 
@@ -21,89 +21,6 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 ---
 
 <!doctype html>
-<style>
-  .search-box {
-    display: flex; align-items: center; background: rgba(0,0,0,0.2); 
-    border: 1px solid var(--border-color); border-radius: 8px; padding: 4px 12px;
-	cursor: pointer;
-	opacity: 0.7;
-  }
-  .search-box input { 
-	background: transparent; 
-	border: none; 
-	color: var(--text-primary); 
-	outline: none; 
-	width: 120px; 
-	cursor: pointer; 
-  }
-  .search-box kbd { 
-	font-family: monospace; 
-	background: var(--surface-color); 
-	padding: 2px 6px; 
-	border-radius: 4px; 
-	font-size: 0.8rem; 
-	border: 1px solid var(--border-color); 
-  }
-  /* 这里没有 is:global，所有的 class 只对当前 Layout.astro 生效，极其标准和安全 */
-.main-header {
-	border-bottom: 1px solid var(--border-color); 
-	margin-bottom: 2rem;
-	background: var(--bg-color); /* 可以在滚动时配合粘性定位加半透明 */
-}
-
-.nav-container {
-	padding: 1rem 2rem; 
-	display: flex; 
-	justify-content: space-between; 
-	align-items: center;
-	max-width: 1200px;
-	margin: 0 auto;
-}
-
-.nav-links {
-	display: flex; 
-	gap: 1.5rem; 
-	font-weight: bold;
-}
-
-.nav-links a {
-	color: var(--text-primary); 
-	text-decoration: none;
-	transition: color 0.3s;
-}
-
-.nav-links a:hover {
-	color: var(--accent-color);
-}
-
-.nav-controls {
-	display: flex; 
-	align-items: center; 
-	gap: 1rem;
-}
-
-#waifu {
-    position: fixed !important;
-    bottom: -10px !important;
-    left: 10px !important;
-    width: 280px !important;
-    height: 250px !important;
-    z-index: 100 !important;
-    pointer-events: none !important;
-    /* 强行覆盖脚本可能产生的动态缩放 */
-    transform: scale(1) !important;
-    transform-origin: bottom left !important;
-  }
-  #waifu canvas {
-    width: 280px !important;
-    height: 250px !important;
-  }
-  #waifu > * { pointer-events: auto !important; }
-
-  @media (max-width: 768px) {
-    #waifu { display: none !important; }
-  }
-</style>
 <html lang={lang} data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
@@ -128,28 +45,48 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 
 			applyTheme();
 
-			document.addEventListener('astro:after-swap', applyTheme);
+			document.addEventListener('astro:before-swap', (e) => {
+				const currentTheme = document.documentElement.getAttribute('data-theme');
+				e.newDocument.documentElement.setAttribute('data-theme', currentTheme);
+			});
 		</script>
 	</head>
 	<body>
-		<div id="global-loader" class="loader-wrapper" style="display:none">
+		<div id="global-loader" class="loader-wrapper">
+			<div class="pixel-loader-container">
+				<div class="pixel-spinner">
+					<div class="dot"></div>
+					<div class="dot"></div>
+					<div class="dot"></div>
+					<div class="dot"></div>
+				</div>
+				<div class="loading-content">
+					<div class="status-line">
+						<span class="prefix">></span> 
+						<span class="loading-text" id="loader-text">INITIALIZING_SYSTEM</span>
+						<span class="cursor">_</span>
+					</div>
+					<div class="progress-bar-container">
+						<div class="progress-bar-fill"></div>
+					</div>
+				</div>
 			</div>
-
+		</div>
 		<header class="main-header">
 			<nav class="nav-container">
 				<div class="nav-links">
 					<a href={getRelativePath('/')}>{t('nav.home')}</a>
-					<a href={getRelativePath('/blog')}>笔记</a>
-					<a href={getRelativePath('/projects')}>项目</a>
-					<a href={getRelativePath('/awards')}>专利 & 奖项</a>
-					<a href={getRelativePath('/schedule')}>行程 & 活动</a>
-					<a href={getRelativePath('/boardgames')}>桌游墙</a>
-					<a href={getRelativePath('/bookmarks')}>导航站</a>
+					<a href={getRelativePath('/blog')}>{t('nav.blog')}</a>
+					<a href={getRelativePath('/projects')}>{t('nav.projects')}</a>
+					<a href={getRelativePath('/awards')}>{t('nav.awards')}</a>
+					<a href={getRelativePath('/schedule')}>{t('nav.schedule')}</a>
+					<a href={getRelativePath('/boardgames')}>{t('nav.boardgames')}</a>
+					<a href={getRelativePath('/bookmarks')}>{t('nav.bookmarks')}</a>
 				</div>
 
 				<div class="nav-controls">
 					<div class="search-box">
-						<input type="text" placeholder="Search system..." disabled />
+						<input type="text" placeholder={t('nav.search')} disabled />
 						<kbd>⌘K</kbd>
 					</div>
 					<LangToggle />
@@ -165,28 +102,55 @@ const getRelativePath = (path: string) => `/${lang}${path}`;
 		<Waifu />
 	</body>
 	<script is:inline>
-		// 监听 Astro 页面替换事件，持久化看板娘 DOM
 		document.addEventListener('astro:before-swap', (e) => {
 			const waifu = document.getElementById('waifu');
 			if (waifu) {
 				e.newDocument.body.appendChild(waifu);
 			}
 		});
-
+	</script>
+	<script is:inline>
+		if (sessionStorage.getItem('siteLoaded') === 'true') {
+			document.getElementById('global-loader').remove();
+		}
+	</script>
+	<script is:inline>
 		const initLoader = () => {
 			const loader = document.getElementById('global-loader');
-			// 如果不存在或者已经被上面的阻断脚本隐藏了，就不再注册 load 事件
-			if (!loader || loader.style.display === 'none') return;
+			if (!loader) return;
+
+			const messages = ["BOOTING_CORE", "SYNCING_DATA", "ESTABLISHING_LINK", "READY"];
+			let msgIndex = 0;
+			const textElem = document.getElementById('loader-text');
+			
+			const textInterval = setInterval(() => {
+			if (textElem && msgIndex < messages.length) {
+				textElem.innerText = messages[msgIndex];
+				msgIndex++;
+			}
+			}, 400);
 
 			window.addEventListener('load', () => {
+			setTimeout(() => {
+				clearInterval(textInterval);
+				loader.style.opacity = '0';
+				loader.style.transition = 'opacity 0.6s steps(6)';
+				
 				setTimeout(() => {
-					loader.classList.add('hidden');
-					sessionStorage.setItem('siteLoaded', 'true');
-					setTimeout(() => loader.remove(), 600);
-				}, 800);
+				loader.remove();
+				sessionStorage.setItem('siteLoaded', 'true');
+				}, 600);
+			}, 1800);
 			});
 		};
-		
+
 		initLoader();
+
+		document.addEventListener('astro:after-swap', () => {
+			if (sessionStorage.getItem('siteLoaded') === 'true') {
+			const loader = document.getElementById('global-loader');
+			if (loader) loader.remove();
+			}
+		});
 	</script>
 </html>

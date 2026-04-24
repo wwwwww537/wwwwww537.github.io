@@ -15,14 +15,16 @@ const games = bgData[lang === 'en' ? 'en' : 'zh'];
   <div class="jules-container max-w-7xl mx-auto pt-6 pb-20 px-4 cabinet-system">
     
     <header class="mb-12">
-      <div class="terminal-loader mb-4">
-        <p>> INITIALIZING_PHYSICAL_CABINET_V4...</p>
-        <p>> CALIBRATING_DEPTH_SENSORS...</p>
-        <p>> ASSET_VISUALIZATION: 3D_READY</p>
-      </div>
-      <h1 class="text-4xl font-bold font-pixel uppercase tracking-widest">
-        {lang === 'zh' ? '物理资产陈列柜' : 'PHYSICAL_ASSET_CABINET'}
-      </h1>
+        <div class="flex justify-between items-end mb-8">
+            <div class="terminal-loader loading">
+                <p>> INITIALIZING_PHYSICAL_CABINET_V4...</p>
+                <p>> CALIBRATING_DEPTH_SENSORS...</p>
+                <p>> ASSET_VISUALIZATION: 3D_READY</p>
+            </div>
+        </div>
+        <h1 class="text-4xl font-bold font-pixel uppercase tracking-widest">
+            {lang === 'zh' ? '物理资产陈列柜' : 'PHYSICAL_ASSET_CABINET'}
+        </h1>
     </header>
 
     <div class="flex gap-4 mb-10 font-pixel text-xs">
@@ -35,43 +37,57 @@ const games = bgData[lang === 'en' ? 'en' : 'zh'];
       {games.map(game => (
         <div class="shelf-unit">
           
-          <div class={`game-box-3d ${game.status === 'LENT_OUT' ? 'opacity-50' : ''}`}>
-            
-            <div class="box-face-side"></div>
-            <div class="box-face-top"></div>
-            
-            <div class="box-face-front">
-              <div class="text-3xl mb-2">🎲</div>
-              <h3 class="font-pixel text-sm font-bold text-center leading-tight">
-                {game.name}
-              </h3>
-              
-              <div class="box-info-overlay flex flex-col justify-center">
-                <div class="border-b border-dashed border-white/30 pb-2 mb-2">
-                  <p class="text-[10px] opacity-70">STATUS</p>
-                  <p class="font-bold">{game.status}</p>
-                </div>
-                <div class="space-y-1">
-                  <p>> {game.players}</p>
-                  <p>> {game.playtime}</p>
-                </div>
-                <div class="mt-4 text-[9px] text-[var(--accent-color)]">
-                  [ CLICK_TO_EXTRACT ]
-                </div>
-              </div>
+            <div class="game-box-3d" onclick={`openGameDialog(${JSON.stringify(game)})`}>
+                <div class="box-face-front" style={`background-image: url('${game.cover || ''}')`}>
+                    {game.status === 'LENT_OUT' && (
+                        <div class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rotate-12 z-50 border border-white font-pixel">
+                            LENT_TO: {game.lentTo}
+                        </div>
+                    )}
+                    </div>
             </div>
 
-            {game.status === 'LENT_OUT' && (
-              <div class="absolute inset-0 z-30 flex items-center justify-center rotate-[-15deg] pointer-events-none">
-                <div class="bg-red-600 text-white font-pixel text-[10px] px-2 py-1 border-2 border-white shadow-lg">
-                  LENT_TO: {game.lentTo}
+            <dialog id="game-modal" class="jules-card p-6 backdrop:bg-black/80 bg-[var(--bg-color)] text-[var(--text-primary)] w-11/12 max-w-md">
+                <div class="flex justify-between items-center border-b border-dashed mb-4 pb-2">
+                    <h2 id="modal-title" class="font-pixel text-xl"></h2>
+                    <button onclick="document.getElementById('game-modal').close()" class="jules-btn px-2 py-1">X</button>
                 </div>
-              </div>
-            )}
-          </div>
+                <div class="space-y-4 font-mono">
+                    <p><strong>玩家人数:</strong> <span id="modal-players"></span></p>
+                    <p><strong>游戏时间:</strong> <span id="modal-time"></span></p>
+                    <p><strong>状态:</strong> <span id="modal-status"></span></p>
+                    <div id="modal-links" class="mt-4 pt-4 border-t border-dashed"></div>
+                </div>
+            </dialog>
 
         </div>
       ))}
     </div>
   </div>
+  <script is:inline>
+    function openGameDialog(game) {
+        document.getElementById('modal-title').innerText = game.name;
+        document.getElementById('modal-players').innerText = game.players;
+        document.getElementById('modal-time').innerText = game.playtime;
+        document.getElementById('modal-status').innerText = game.status;
+        
+        const linksDiv = document.getElementById('modal-links');
+        linksDiv.innerHTML = game.url ? `<a href="${game.url}" target="_blank" class="text-[var(--accent-color)] hover:underline">[ 查看规则/BGG外链 ]</a>` : '';
+        
+        document.getElementById('game-modal').showModal();
+    }
+</script>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const loaders = document.querySelectorAll('.terminal-loader');
+    
+    loaders.forEach(loader => {
+      loader.classList.remove('active');
+      
+      void (loader as HTMLElement).offsetWidth; 
+      
+      loader.classList.add('active');
+    });
+  });
+</script>
 </Layout>

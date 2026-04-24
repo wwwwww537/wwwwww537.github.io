@@ -1,8 +1,8 @@
 ---
 // src/pages/[lang]/blog.astro
 import { getCollection, type CollectionEntry } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
 import { useTranslations } from '../../i18n/utils';
+import Layout from '../../layouts/Layout.astro';
 import '../../styles/blog.css';
 
 export function getStaticPaths() {
@@ -10,19 +10,17 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
-const t = useTranslations(lang as 'zh' | 'en'); 
+const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+const t = useTranslations(currentLang); 
 
-// 获取并过滤数据
 const allPosts = await getCollection('blog', (post: CollectionEntry<'blog'>) => {
-  return post.data.lang === lang;
+  return post.data.lang === currentLang;
 });
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-// 提取分类
 const categories = [...new Set(sortedPosts.map((post) => post.data.category))];
 ---
 
-<Layout title={t('nav.blog')} lang={lang as 'zh' | 'en'}>
+<Layout title={t('nav.blog')} lang={currentLang}>
   <div class="jules-container max-w-4xl mx-auto pt-8 pb-20 px-4">
     
     <header class="mb-12">
@@ -31,31 +29,31 @@ const categories = [...new Set(sortedPosts.map((post) => post.data.category))];
         <span>cat ~/workspace/logs/*.md</span>
       </div>
       <h1 class="text-4xl font-bold font-pixel text-[var(--text-primary)]">
-        {lang === 'zh' ? '笔记' : 'Thoughts & Archives'}
+        {t('blog.title')}
       </h1>
     </header>
 
     <nav class="category-bar">
-      <button class="category-btn active">{lang === 'zh' ? '全部' : 'ALL'}</button>
+      <button class="category-btn active" data-category="all">{t('common.all')}</button>
       {categories.map(cat => (
-        <button class="category-btn">{cat}</button>
+        <button class="category-btn" data-category={cat}>{cat}</button>
       ))}
     </nav>
 
     <div class="blog-list">
       {sortedPosts.map(post => (
-        <a href={`/${lang}/blog/${post.id}`} class="blog-card">
+        <a href={`/${lang}/blog/${post.id}`} data-category={post.data.category} class="blog-card">
           <div class="absolute -top-3 -right-3 px-2 py-1 bg-[var(--accent-color)] text-black text-[10px] font-bold font-pixel">
             LOG_ID: {post.id.slice(0, 5).toUpperCase()}
           </div>
           
           <h3>{post.data.title}</h3>
           
-          <p>{post.data.description}</p>
+          <p>{post.data.desc}</p>
           
           <div class="blog-meta">
             <span class="date">
-              <span class="opacity-50">PUBLISHED_AT:</span> {post.data.pubDate.toLocaleDateString()}
+              <span class="opacity-50 tracking-normal">{t('blog.publish')}:</span> {post.data.pubDate.toLocaleDateString()}
             </span>
             <span class="category-tag">
               #{post.data.category}
@@ -72,13 +70,30 @@ const categories = [...new Set(sortedPosts.map((post) => post.data.category))];
 </Layout>
 
 <script>
-  // 这里可以添加简单的客户端过滤逻辑
-  const buttons = document.querySelectorAll('.category-btn');
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // 实际过滤逻辑可以根据需求使用 URL params 或简单的 DOM 隐藏
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll('.category-btn');
+    const cards = document.querySelectorAll('.blog-card');
+
+    if (buttons.length === 0 || cards.length === 0) return;
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const targetCategory = btn.getAttribute('data-category');
+
+        cards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+          const cardElem = card as HTMLElement;
+          
+          if (targetCategory === 'all' || targetCategory === cardCategory) {
+            cardElem.style.display = ''; 
+          } else {
+            cardElem.style.display = 'none'; 
+          }
+        });
+      });
     });
   });
 </script>

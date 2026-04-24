@@ -10,10 +10,10 @@ const blogCollection = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
+    desc: z.string(),
     pubDate: z.date(),
     category: z.string(),
-    tags: z.array(z.string()),
+    tech: z.array(z.string()),
     lang: z.enum(['zh', 'en']).default('zh'),
   }),
 });

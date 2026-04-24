@@ -12,7 +12,6 @@
   margin-bottom: 3rem;
   font-family: var(--font-mono);
 }
-html[data-theme='dark'] .grep-search-box { box-shadow: 8px 8px 0 0 rgba(255, 255, 255, 0.1); }
 
 .grep-search-box input {
   background: transparent;
@@ -105,14 +104,4 @@ html[data-theme='dark'] .grep-search-box { box-shadow: 8px 8px 0 0 rgba(255, 255
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-/* 友链特殊高亮（如果是 LINK_EXCHANGE） */
-.bookmark-grid[data-category="LINK_EXCHANGE"] .bookmark-card {
-  border-color: var(--accent-color);
-  box-shadow: 6px 6px 0 0 rgba(var(--accent-color-rgb), 0.3);
-}
-.bookmark-grid[data-category="LINK_EXCHANGE"] .bookmark-card:hover {
-  box-shadow: 10px 10px 0 0 var(--text-primary);
-  border-color: var(--text-primary);
 }

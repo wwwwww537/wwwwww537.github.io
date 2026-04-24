@@ -2,37 +2,36 @@
 // src/components/LangToggle.astro
 const { pathname } = Astro.url;
 
-// 移除路径开头的 /zh 或 /en 部分，获取纯粹的路由名
-// 例如 /zh/awards -> /awards
 const purePath = pathname.replace(/^\/(zh|en)/, '');
 
-const targetZh = `/zh${purePath || '/'}`;
-const targetEn = `/en${purePath || '/'}`;
+const pathForZh = purePath.replace(/-en\/?$/, '-zh');
+const pathForEn = purePath.replace(/-zh\/?$/, '-en');
+
+const targetZh = `/zh${pathForZh || '/'}`;
+const targetEn = `/en${pathForEn || '/'}`;
 
 const isEn = pathname.startsWith('/en');
+
+const baseClass = "transition-all duration-300 hover:text-[var(--text-primary)]";
+const activeClass = "text-[var(--accent-color)] font-bold drop-shadow-[0_0_8px_rgba(6,182,212,0.4)]";
 ---
 
-<div class="lang-switcher">
-  <a href={targetZh} class={!isEn ? "active" : ""}>ZH</a>
-  <span class="divider">/</span>
-  <a href={targetEn} class={isEn ? "active" : ""}>EN</a>
+<div class="flex items-center gap-2 mr-4 text-[var(--text-secondary)] font-mono leading-none">
+  
+  <a 
+    href={targetZh} 
+    class={`text-[12px] ${baseClass} ${!isEn ? activeClass : ""}`}
+  >
+    中文
+  </a>
+  
+  <span class="text-[12px] opacity-40 font-light">/</span>
+  
+  <a 
+    href={targetEn} 
+    class={`text-[14px] tracking-wide ${baseClass} ${isEn ? activeClass : ""}`}
+  >
+    EN
+  </a>
+  
 </div>
-
-<style>
-  .lang-switcher {
-    display: flex;
-    gap: 8px;
-    font-size: 0.8rem;
-    margin-right: 1rem;
-    color: var(--text-secondary);
-  }
-  .lang-switcher a {
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.3s;
-  }
-  .lang-switcher a.active {
-    color: var(--accent-color);
-    font-weight: bold;
-  }
-</style>

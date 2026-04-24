@@ -1,4 +1,5 @@
 ---
+import { useTranslations } from '../../i18n/utils';
 import Layout from '../../layouts/Layout.astro';
 import bookmarksData from '../../data/bookmarks.json';
 import '../../styles/bookmarks.css';
@@ -9,10 +10,11 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params;
 const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+const t = useTranslations(currentLang); 
 const categories = bookmarksData[currentLang];
 ---
 
-<Layout title={currentLang === 'zh' ? '外部节点 - Jules Console' : 'External Nodes - Jules Console'} lang={currentLang}>
+<Layout title={t('nav.bookmarks')} lang={currentLang}>
   <div class="jules-container max-w-6xl mx-auto pt-6 pb-20 px-4">
     
     <header class="mb-10">
@@ -21,7 +23,7 @@ const categories = bookmarksData[currentLang];
         <p>> FETCHING_EXTERNAL_NODES...</p>
       </div>
       <h1 class="text-4xl font-bold font-pixel uppercase">
-        {currentLang === 'zh' ? '外部网络节点' : 'EXTERNAL_NODES'}
+        {t('bookmarks.title')}
       </h1>
     </header>
 
@@ -29,7 +31,7 @@ const categories = bookmarksData[currentLang];
       <span class="text-[var(--accent-color)]">></span>
       <span class="opacity-70 font-bold">grep -i</span>
       <span class="text-green-500">"</span>
-      <input type="text" id="nodeSearch" placeholder={currentLang === 'zh' ? '输入关键字搜索节点...' : 'Search nodes...'} autocomplete="off" />
+      <input type="text" id="nodeSearch" placeholder={t('bookmarks.search')+'...'} autocomplete="off" />
       <span class="text-green-500">"</span>
       <span class="grep-cursor"></span>
     </div>
@@ -69,14 +71,17 @@ const categories = bookmarksData[currentLang];
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('astro:page-load', () => {
       const searchInput = document.getElementById('nodeSearch') as HTMLInputElement;
       const categories = document.querySelectorAll('.bookmark-category');
       const noResults = document.getElementById('no-results');
 
       if (!searchInput) return;
 
-      searchInput.addEventListener('input', (e) => {
+      const newSearchInput = searchInput.cloneNode(true) as HTMLInputElement;
+      searchInput.parentNode?.replaceChild(newSearchInput, searchInput);
+
+      newSearchInput.addEventListener('input', (e) => {
         const query = (e.target as HTMLInputElement).value.toLowerCase().trim();
         let anyVisible = false;
 
@@ -87,7 +92,6 @@ const categories = bookmarksData[currentLang];
 
           cards.forEach(card => {
             const cardEl = card as HTMLElement;
-            // 获取卡片内的文本（标题+描述）
             const textContent = cardEl.textContent?.toLowerCase() || '';
             
             if (textContent.includes(query)) {
@@ -98,7 +102,6 @@ const categories = bookmarksData[currentLang];
             }
           });
 
-          // 如果该分类下没有可见的卡片，隐藏整个分类头部
           if (hasVisibleCard) {
             cat.style.display = 'block';
             anyVisible = true;
@@ -107,7 +110,6 @@ const categories = bookmarksData[currentLang];
           }
         });
 
-        // 控制"无结果"提示的显示与隐藏
         if (noResults) {
           noResults.style.display = anyVisible ? 'none' : 'block';
         }

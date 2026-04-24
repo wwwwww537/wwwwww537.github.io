@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
-import '../../../styles/project-detail.css'; // 沿用硬派 UI 样式和 terminal-loader
+import '../../../styles/project-detail.css';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -60,3 +60,17 @@ const { Content } = await render(project);
 
   </div>
 </Layout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const loaders = document.querySelectorAll('.terminal-loader');
+    
+    loaders.forEach(loader => {
+      loader.classList.remove('active');
+      
+      void (loader as HTMLElement).offsetWidth; 
+      
+      loader.classList.add('active');
+    });
+  });
+</script>

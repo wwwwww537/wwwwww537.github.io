@@ -21,8 +21,7 @@
       "category": "LINK_EXCHANGE",
       "title": "友情链接",
       "links": [
-        { "name": "Jack's Terminal", "url": "#", "desc": "前端老哥的极客博客", "icon": "👽" },
-        { "name": "Alice's Wonderland", "url": "#", "desc": "全栈开发者的数字花园", "icon": "🍄" }
+        { "name": "徐先生的学术主页", "url": "https://xq141839.github.io/my-portfolio/", "desc": "诺丁汉大学CS博士生，专注医学图像分析与医疗AI大模型研究", "icon": "🎓" }
       ]
     }
   ],
@@ -48,8 +47,7 @@
       "category": "LINK_EXCHANGE",
       "title": "Friend Links",
       "links": [
-        { "name": "Jack's Terminal", "url": "#", "desc": "Frontend geek blog", "icon": "👽" },
-        { "name": "Alice's Wonderland", "url": "#", "desc": "Fullstack digital garden", "icon": "🍄" }
+        { "name": "Mr. Xu's Academic Profile", "url": "https://xq141839.github.io/my-portfolio/", "desc": "Ph.D. Researcher at UoN, focusing on Medical Image Analysis and Foundation Models.", "icon": "🎓" }
       ]
     }
   ]

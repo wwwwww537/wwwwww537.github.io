@@ -100,7 +100,3 @@ html[data-theme='dark'] .category-btn.active {
   color: var(--bg-color);
   font-weight: bold;
 }
-
-html[data-theme='dark'] .blog-card {
-  border-color: rgba(255, 255, 255, 0.2);
-}

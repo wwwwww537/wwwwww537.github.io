@@ -57,3 +57,17 @@ html[data-theme='dark'] .award-tag {
   margin-bottom: 1rem;
   opacity: 0.8;
 }
+
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+  }
+  
+  dialog[open] {
+    animation: cyber-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  @keyframes cyber-pop {
+    0% { transform: scale(0.95); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }

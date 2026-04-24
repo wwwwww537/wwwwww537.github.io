@@ -1,10 +1,30 @@
 {
+  "common.viewAll": "View All",
+  "common.all": "All",
+  "common.close": "Close", 
+
   "nav.home": "Home",
-  "nav.awards": "Awards",
   "nav.blog": "Blog",
-  "hero.title": "Welcome to My Space",
-  "hero.desc": "Frontend Engineer / Advanced Interaction Design",
-  "awards.desc": "Showcasing my authorized patents and professional certificates.",
-  "awards.patents": "专利授权",
-  "awards.certs": "专业证书"
+  "nav.projects": "Projects",
+  "nav.awards": "Awards",
+  "nav.schedule": "Schedule",
+  "nav.boardgames": "Boardgames",
+  "nav.bookmarks": "Bookmarks",
+  "nav.search": "Search system...",
+
+  "home.profile.status": "ONLINE",
+  "home.profile.title": "Software Engineer.",
+  "home.profile.subTitle": "Board Game Rookie.",
+
+  "blog.title": "Notes",
+  "blog.publish": "PUBLISHED_AT",
+  "blog.date": "DATE",
+  "blog.dir": "DIR",
+
+  "awards.desc": "Authorized patents and professional certificates.",
+  "awards.patents": "Authorized patents",
+  "awards.certs": "Professional certificates",
+
+  "bookmarks.title": "EXTERNAL_NODES",
+  "bookmarks.search": "Search nodes"
 }

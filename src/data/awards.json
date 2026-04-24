@@ -1,55 +1,41 @@
 {
-  "zh":{
+  "zh": {
     "patents": [
       {
-        "id": "p1",
-        "title": "一种高并发前端渲染优化方法",
-        "desc": "基于虚拟 DOM 差异量化分析的专利，大幅提升工业数据大屏渲染帧率。",
-        "tag": "发明专利",
-        "link": "https://patents.google.com/"
-      },
-      {
-        "id": "p2",
-        "title": "MES系统状态可视化交互模型",
-        "desc": "针对制造业执行系统的前端交互逻辑重构方案。",
-        "tag": "实用新型",
-        "link": "#"
+        "tag": "SOFTWARE COPYRIGHT",
+        "title": "快速灵活的交互式医学图像分割系统",
+        "desc": "基于交互式算法构建的医学图像分割软件，有效提升临床病灶标注效率与精度。",
+        "image": "/images/2025R11L3001567软著登记证书.jpg",
+        "link": ""
       }
     ],
     "certificates": [
       {
-        "id": "c1",
-        "title": "高级前端开发工程师认证",
-        "desc": "掌握复杂架构设计与性能调优能力。",
-        "tag": "专业证书",
-        "link": "#"
+        "tag": "PROFESSIONAL CERT",
+        "title": "电工技师证",
+        "desc": "国家职业资格二级（技师），具备复杂工业电气系统控制、安装与高级故障排除能力。",
+        "image": "",
+        "link": ""
       }
     ]
   },
-  "en":{
+  "en": {
     "patents": [
       {
-        "id": "p1",
-        "title": "A high concurrency front-end rendering optimization method",
-        "desc": "基于虚拟 DOM 差异量化分析的专利，大幅提升工业数据大屏渲染帧率。",
-        "tag": "发明专利",
-        "link": "https://patents.google.com/"
-      },
-      {
-        "id": "p2",
-        "title": "MES系统状态可视化交互模型",
-        "desc": "针对制造业执行系统的前端交互逻辑重构方案。",
-        "tag": "实用新型",
-        "link": "#"
+        "tag": "SOFTWARE COPYRIGHT",
+        "title": "Interactive Medical Image Segmentation System",
+        "desc": "Medical image segmentation software built on interactive algorithms, effectively enhancing the efficiency and precision of clinical lesion annotation.",
+        "image": "/images/2025R11L3001567软著登记证书.jpg",
+        "link": ""
       }
     ],
     "certificates": [
       {
-        "id": "c1",
-        "title": "高级前端开发工程师认证",
-        "desc": "掌握复杂架构设计与性能调优能力。",
-        "tag": "专业证书",
-        "link": "#"
+        "tag": "PROFESSIONAL CERT",
+        "title": "Certified Electrician Technician",
+        "desc": "National Vocational Qualification Level 2. Certified in the installation, control logic design, and advanced troubleshooting of complex industrial electrical systems.",
+        "image": "",
+        "link": ""
       }
     ]
   }

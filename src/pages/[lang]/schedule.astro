@@ -1,107 +1,46 @@
 ---
+// src/pages/[lang]/schedule.astro 核心修改
 import Layout from '../../layouts/Layout.astro';
 import scheduleData from '../../data/schedule.json';
+import logsData from '../../data/logs.json'; // 引入日志数据
+import InteractiveCalendar from '../../components/InteractiveCalendar.jsx'; // 新建 React 组件
 import '../../styles/schedule.css';
 
 export function getStaticPaths() {
-  return [{ params: { lang: 'zh' } }, { params: { lang: 'en' } }];
+    return [
+        { params: { lang: 'zh' } },
+        { params: { lang: 'en' } }
+    ];
 }
 
 const { lang } = Astro.params;
 const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
 const data = scheduleData[currentLang];
-
-// 模拟 2026 年 4 月的日历生成（4月1日是周三）
-const daysInMonth = 30;
-const startDay = 3; // 0=Sun, 1=Mon, 2=Tue, 3=Wed...
-const calendarDays = Array.from({ length: 42 }, (_, i) => {
-  const day = i - startDay + 1;
-  return day > 0 && day <= daysInMonth ? day : null;
-});
-
-const dayLabels = currentLang === 'zh' 
-  ? ['日', '一', '二', '三', '四', '五', '六']
-  : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-
-const getEventForDay = (day: number | null) => {
-  if (!day) return [];
-  const dateStr = `2026-04-${day.toString().padStart(2, '0')}`;
-  return data.events.filter(e => e.date === dateStr);
-};
+const logs = logsData[currentLang]; // 获取日志
 ---
 
-<Layout title={currentLang === 'zh' ? '行程 & 活动 - Jules Console' : 'Schedule - Jules Console'} lang={currentLang}>
+<Layout title={currentLang === 'zh' ? '行程调度中心' : 'TASK_SCHEDULER'} lang={currentLang}>
   <div class="jules-container max-w-7xl mx-auto pt-6 pb-20 px-4">
-    
-    <header class="mb-10">
-      <div class="terminal-loader loading mb-4">
-        <p>> CLOCK_SYNC: {new Date().toISOString()}</p>
-        <p>> FETCHING_TASKS: DATABASE_CONNECTED</p>
-        <p>> STATUS: REALTIME_UPDATE_ENABLED</p>
-      </div>
-      <h1 class="text-4xl font-bold font-pixel">{currentLang === 'zh' ? '行程调度中心' : 'TASK_SCHEDULER'}</h1>
-    </header>
-
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-      
       <main class="lg:col-span-3">
-        <div class="calendar-header jules-card border-b-0">
-          <div class="font-pixel text-xl uppercase">{data.current_month}</div>
-          <div class="flex gap-4">
-            <button class="jules-btn px-3 py-1 text-xs"> [ PREV ] </button>
-            <button class="jules-btn px-3 py-1 text-xs"> [ NEXT ] </button>
-          </div>
-        </div>
-
-        <div class="calendar-grid">
-          {dayLabels.map(label => (
-            <div class="calendar-day-label">{label}</div>
-          ))}
-          
-          {calendarDays.map(day => {
-            const events = getEventForDay(day);
-            return (
-              <div class={`calendar-cell ${day === 20 ? 'today' : ''}`}>
-                <span class="day-number">{day}</span>
-                <div class="mt-2 space-y-1">
-                  {events.map(ev => (
-                    <div class="cell-event">
-                      <span class={`event-dot ${ev.type}`}></span>
-                      {ev.title}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+        <InteractiveCalendar client:load lang={currentLang} events={data.events} monthName={data.current_month} />
       </main>
 
-      <aside class="schedule-sidebar">
-        <div class="task-list-card">
-          <h3 class="font-pixel text-sm border-b-2 border-[var(--text-primary)] pb-2 mb-4">PENDING_TASKS</h3>
-          <div class="space-y-6">
-            {data.events.map(ev => (
-              <div class="relative pl-6 border-l-2 border-dashed border-[var(--border-color)]">
-                <div class={`absolute -left-[5px] top-1 w-2 h-2 rotate-45 border-2 bg-[var(--surface-color)] ${ev.type === 'work' ? 'border-[var(--accent-color)]' : 'border-[var(--text-primary)]'}`}></div>
-                <div class="text-[10px] font-mono opacity-50">{ev.date}</div>
-                <div class="font-bold text-sm font-pixel mb-1">{ev.title}</div>
-                <div class="text-xs text-[var(--text-secondary)]">{ev.desc}</div>
+      <aside class="flex flex-col gap-6">
+        <div class="task-list-card jules-card p-4">
+          <h3 class="font-pixel text-sm border-b-2 border-[var(--text-primary)] pb-2 mb-4">SYSTEM_LOGS</h3>
+          <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+            {logs.map(log => (
+              <div class="relative pl-6 border-l-2 border-dashed border-[var(--border-color)] pb-2">
+                <div class={`absolute -left-[5px] top-1 w-2 h-2 rotate-45 border-2 bg-[var(--surface-color)] ${log.type === 'primary' ? 'border-[var(--accent-color)]' : 'border-[var(--text-primary)]'}`}></div>
+                <div class="text-[10px] font-mono opacity-50">{log.date}</div>
+                <div class="font-bold text-xs font-pixel">{log.title}</div>
+                <div class="text-[10px] text-[var(--text-secondary)]">{log.desc}</div>
               </div>
             ))}
           </div>
         </div>
-
-        <div class="task-list-card bg-[var(--accent-color)]/5">
-          <h3 class="font-pixel text-sm mb-4 uppercase">System_Legend</h3>
-          <div class="space-y-2 text-xs font-mono">
-            <div class="flex items-center gap-2"><span class="event-dot work"></span> WORK_ORDER</div>
-            <div class="flex items-center gap-2"><span class="event-dot play"></span> RECREATION</div>
-            <div class="flex items-center gap-2"><span class="event-dot meeting"></span> MEETING</div>
-          </div>
-        </div>
-      </aside>
-
+        </aside>
     </div>
   </div>
 </Layout>
