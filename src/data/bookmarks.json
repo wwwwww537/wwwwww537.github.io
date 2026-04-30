@@ -21,7 +21,8 @@
       "category": "LINK_EXCHANGE",
       "title": "友情链接",
       "links": [
-        { "name": "徐先生的学术主页", "url": "https://xq141839.github.io/my-portfolio/", "desc": "诺丁汉大学CS博士生，专注医学图像分析与医疗AI大模型研究", "icon": "🎓" }
+        { "name": "徐先生的学术主页", "url": "https://xq141839.github.io/my-portfolio/", "desc": "诺丁汉大学CS博士生，专注医学图像分析与医疗AI大模型研究", "icon": "🎓" },
+        { "name": "CVIP Lab", "url": "https://cvip-unnc.github.io/cvip-lab/", "desc": "计算机视觉与智能感知。我们正在探索人工智能的前沿领域，以理解视觉世界并与之互动。", "icon": "🔬" }
       ]
     }
   ],
@@ -47,7 +48,8 @@
       "category": "LINK_EXCHANGE",
       "title": "Friend Links",
       "links": [
-        { "name": "Mr. Xu's Academic Profile", "url": "https://xq141839.github.io/my-portfolio/", "desc": "Ph.D. Researcher at UoN, focusing on Medical Image Analysis and Foundation Models.", "icon": "🎓" }
+        { "name": "Mr. Xu's Academic Profile", "url": "https://xq141839.github.io/my-portfolio/", "desc": "Ph.D. Researcher at UoN, focusing on Medical Image Analysis and Foundation Models.", "icon": "🎓" },
+        { "name": "CVIP Lab", "url": "https://cvip-unnc.github.io/cvip-lab/", "desc": "Computer Vision and Intelligent Perception. We are exploring the frontiers of AI to understand and interact with the visual world.", "icon": "🔬" }
       ]
     }
   ]

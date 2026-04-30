@@ -27,6 +27,13 @@ const games = bgData[lang === 'en' ? 'en' : 'zh'];
         </h1>
     </header>
 
+    <!-- 正在施工中 横幅 -->
+    <div class="border-2 border-dashed border-yellow-500 bg-yellow-500/10 text-yellow-500 p-4 mb-10 font-pixel animate-pulse flex items-center justify-center gap-4">
+        <span>⚠️</span>
+        <p>{lang === 'zh' ? 'SYSTEM_WARNING: 模块正在施工中 (UNDER CONSTRUCTION)...' : 'SYSTEM_WARNING: MODULE UNDER CONSTRUCTION...'}</p>
+        <span>⚠️</span>
+    </div>
+
     <div class="flex gap-4 mb-10 font-pixel text-xs">
       <button class="jules-btn px-4 py-1 active">[ ALL ]</button>
       <button class="jules-btn px-4 py-1">[ IN_STOCK ]</button>
@@ -36,7 +43,6 @@ const games = bgData[lang === 'en' ? 'en' : 'zh'];
     <div class="cabinet-wall">
       {games.map(game => (
         <div class="shelf-unit">
-          
             <div class="game-box-3d" onclick={`openGameDialog(${JSON.stringify(game)})`}>
                 <div class="box-face-front" style={`background-image: url('${game.cover || ''}')`}>
                     {game.status === 'LENT_OUT' && (
@@ -44,26 +50,28 @@ const games = bgData[lang === 'en' ? 'en' : 'zh'];
                             LENT_TO: {game.lentTo}
                         </div>
                     )}
-                    </div>
+                </div>
             </div>
-
-            <dialog id="game-modal" class="jules-card p-6 backdrop:bg-black/80 bg-[var(--bg-color)] text-[var(--text-primary)] w-11/12 max-w-md">
-                <div class="flex justify-between items-center border-b border-dashed mb-4 pb-2">
-                    <h2 id="modal-title" class="font-pixel text-xl"></h2>
-                    <button onclick="document.getElementById('game-modal').close()" class="jules-btn px-2 py-1">X</button>
-                </div>
-                <div class="space-y-4 font-mono">
-                    <p><strong>玩家人数:</strong> <span id="modal-players"></span></p>
-                    <p><strong>游戏时间:</strong> <span id="modal-time"></span></p>
-                    <p><strong>状态:</strong> <span id="modal-status"></span></p>
-                    <div id="modal-links" class="mt-4 pt-4 border-t border-dashed"></div>
-                </div>
-            </dialog>
-
         </div>
       ))}
     </div>
+
+    <!-- 将 Dialog 移出循环，作为全局共用的唯一弹窗 -->
+    <dialog id="game-modal" class="jules-card p-6 backdrop:bg-black/80 bg-[var(--bg-color)] text-[var(--text-primary)] w-11/12 max-w-md">
+        <div class="flex justify-between items-center border-b border-dashed mb-4 pb-2">
+            <h2 id="modal-title" class="font-pixel text-xl"></h2>
+            <button onclick="document.getElementById('game-modal').close()" class="jules-btn px-2 py-1 hover:text-red-500 cursor-pointer">X</button>
+        </div>
+        <div class="space-y-4 font-mono">
+            <p><strong>{lang === 'zh' ? '玩家人数' : 'Players'}:</strong> <span id="modal-players"></span></p>
+            <p><strong>{lang === 'zh' ? '游戏时间' : 'Playtime'}:</strong> <span id="modal-time"></span></p>
+            <p><strong>{lang === 'zh' ? '状态' : 'Status'}:</strong> <span id="modal-status"></span></p>
+            <div id="modal-links" class="mt-4 pt-4 border-t border-dashed"></div>
+        </div>
+    </dialog>
+
   </div>
+
   <script is:inline>
     function openGameDialog(game) {
         document.getElementById('modal-title').innerText = game.name;
@@ -76,18 +84,19 @@ const games = bgData[lang === 'en' ? 'en' : 'zh'];
         
         document.getElementById('game-modal').showModal();
     }
-</script>
-<script>
-  document.addEventListener('astro:page-load', () => {
-    const loaders = document.querySelectorAll('.terminal-loader');
-    
-    loaders.forEach(loader => {
-      loader.classList.remove('active');
+  </script>
+
+  <script>
+    document.addEventListener('astro:page-load', () => {
+      const loaders = document.querySelectorAll('.terminal-loader');
       
-      void (loader as HTMLElement).offsetWidth; 
-      
-      loader.classList.add('active');
+      loaders.forEach(loader => {
+        loader.classList.remove('active');
+        
+        void (loader as HTMLElement).offsetWidth; 
+        
+        loader.classList.add('active');
+      });
     });
-  });
-</script>
+  </script>
 </Layout>

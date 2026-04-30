@@ -1,9 +1,9 @@
 ---
-// src/pages/[lang]/schedule.astro 核心修改
+// src/pages/[lang]/schedule.astro
+import { useTranslations } from '../../i18n/utils';
 import Layout from '../../layouts/Layout.astro';
 import scheduleData from '../../data/schedule.json';
-import logsData from '../../data/logs.json'; // 引入日志数据
-import InteractiveCalendar from '../../components/InteractiveCalendar.jsx'; // 新建 React 组件
+import InteractiveCalendar from '../../components/InteractiveCalendar.jsx';
 import '../../styles/schedule.css';
 
 export function getStaticPaths() {
@@ -15,32 +15,73 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params;
 const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+const t = useTranslations(currentLang); 
 const data = scheduleData[currentLang];
-const logs = logsData[currentLang]; // 获取日志
+const logs = data.events; 
 ---
 
-<Layout title={currentLang === 'zh' ? '行程调度中心' : 'TASK_SCHEDULER'} lang={currentLang}>
+<Layout title={t('nav.schedule')} lang={currentLang}>
   <div class="jules-container max-w-7xl mx-auto pt-6 pb-20 px-4">
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      
       <main class="lg:col-span-3">
-        <InteractiveCalendar client:load lang={currentLang} events={data.events} monthName={data.current_month} />
+        <InteractiveCalendar key={currentLang} client:load lang={currentLang} events={data.events}/>
       </main>
 
-      <aside class="flex flex-col gap-6">
-        <div class="task-list-card jules-card p-4">
-          <h3 class="font-pixel text-sm border-b-2 border-[var(--text-primary)] pb-2 mb-4">SYSTEM_LOGS</h3>
-          <div class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-            {logs.map(log => (
-              <div class="relative pl-6 border-l-2 border-dashed border-[var(--border-color)] pb-2">
-                <div class={`absolute -left-[5px] top-1 w-2 h-2 rotate-45 border-2 bg-[var(--surface-color)] ${log.type === 'primary' ? 'border-[var(--accent-color)]' : 'border-[var(--text-primary)]'}`}></div>
-                <div class="text-[10px] font-mono opacity-50">{log.date}</div>
-                <div class="font-bold text-xs font-pixel">{log.title}</div>
-                <div class="text-[10px] text-[var(--text-secondary)]">{log.desc}</div>
-              </div>
-            ))}
+      <aside class="lg:col-span-1 relative mt-8 lg:mt-0">
+        <div class="lg:absolute lg:inset-0 h-[500px] lg:h-full flex flex-col">
+          <div class="task-list-card jules-card p-5 flex flex-col h-full min-h-0">
+            <h3 class="font-pixel text-base border-b-2 border-[var(--text-primary)] pb-3 mb-5 flex-shrink-0">
+              SYSTEM_LOGS
+            </h3>
+            
+            <div class="space-y-6 overflow-y-auto pr-4 custom-scrollbar flex-1 min-h-0">
+              {logs.slice().reverse().map(log => (
+                <div class="log-item relative pl-6 border-l-2 border-dashed border-[var(--border-color)] pb-2 cursor-pointer hover:bg-[var(--border-color)] transition-colors rounded-r-lg pt-1 pr-2 group" data-date={log.date}>
+                  <div class={`absolute -left-[6px] top-2 w-2.5 h-2.5 rotate-45 border-2 bg-[var(--surface-color)] ${log.type === 'work' ? 'border-[var(--accent-color)]' : 'border-[var(--text-primary)]'}`}></div>
+                  
+                  <div class="text-xs font-mono opacity-60 mb-1.5 group-hover:opacity-100 transition-opacity">
+                    {log.date} {log.time && `<${log.time}>`}
+                  </div>
+                  
+                  <div class="font-bold text-sm font-pixel leading-snug mb-1.5">
+                    {log.title}
+                  </div>
+                  
+                  <div class="text-xs text-[var(--text-secondary)] leading-relaxed">
+                    {log.desc}
+                  </div>
+
+                  {log.link && log.link.url && (
+                    <div class="mt-3 mb-1">
+                      <a href={log.link.url} target={log.link.type === 'external' ? "_blank" : "_self"} rel="noopener noreferrer" class="inline-block text-xs font-mono px-2 py-1 border border-[var(--text-primary)] text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-color)] transition-colors" onclick="event.stopPropagation();">
+                        [{log.link.label || t('common.link')}]
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        </aside>
+      </aside>
+
     </div>
   </div>
 </Layout>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    
+    const logItem = target.closest('.log-item');
+    
+    if (logItem) {
+      const date = logItem.getAttribute('data-date');
+      if (date) {
+        const jumpEvent = new CustomEvent('calendar-jump', { detail: { date } });
+        window.dispatchEvent(jumpEvent);
+      }
+    }
+  });
+</script>

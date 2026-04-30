@@ -3,7 +3,7 @@
 import { getCollection } from 'astro:content';
 import { useTranslations } from '../../i18n/utils';
 import Layout from '../../layouts/Layout.astro';
-import logsData from '../../data/logs.json';
+import scheduleData from '../../data/schedule.json'; 
 import '../../styles/home.css';
 
 export function getStaticPaths() {
@@ -18,7 +18,8 @@ const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
 const t = useTranslations(currentLang);
 const getRelativePath = (path: string) => `/${currentLang}${path}`;
 
-const logs = logsData[currentLang];
+const logs = scheduleData[currentLang].events.slice().reverse().slice(0, 3);
+
 const allProjects = await getCollection('projects', ({ data }) => data.lang === currentLang);
 const displayProjects = allProjects.slice(0, 3);
 ---
@@ -130,16 +131,30 @@ const displayProjects = allProjects.slice(0, 3);
           <h3 class="text-lg font-bold flex items-center gap-2">
             <span class="text-[var(--accent-color)]">#</span> Logs
           </h3>
-          <a href="/blog" class="text-xs hover:text-[var(--accent-color)] underline decoration-dashed transition-colors pixel-text">{t('common.viewAll')}</a>
+          <a href={getRelativePath('/schedule')} class="text-xs hover:text-[var(--accent-color)] underline decoration-dashed transition-colors pixel-text">{t('common.viewAll')}</a>
         </div>
         
         <div class="pl-2 space-y-8">
           {logs.map((log) => (
-            <div class="relative pl-8 timeline-line">
-              <div class={`absolute left-0 top-1.5 pixel-dot border-2 bg-[var(--surface-color)] ${log.type === 'primary' ? 'border-[var(--accent-color)]' : 'border-[var(--text-primary)]'}`}></div>
-              <div class="text-xs text-[var(--accent-color)] mb-1 pixel-text">{log.date}</div>
-              <h4 class="font-bold">{log.title}</h4>
-              <p class="text-sm text-[var(--text-secondary)] mt-1">{log.desc}</p>
+            <div class="relative pl-8 timeline-line flex justify-between items-start gap-4">
+              <div class={`absolute left-0 top-1.5 pixel-dot border-2 bg-[var(--surface-color)] ${log.type === 'work' ? 'border-[var(--accent-color)]' : 'border-[var(--text-primary)]'}`}></div>
+              
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-[var(--accent-color)] mb-1 pixel-text">{log.date}</div>
+                <h4 class="font-bold truncate">{log.title}</h4>
+                <p class="text-sm text-[var(--text-secondary)] mt-1">{log.desc}</p>
+              </div>
+
+              {log.link && log.link.url && (
+                <a 
+                  href={log.link.url}
+                  target={log.link.type === 'external' ? "_blank" : "_self"}
+                  rel="noopener noreferrer"
+                  class="shrink-0 mt-2 text-xs font-pixel px-3 py-1.5 border border-[var(--text-primary)] text-[var(--text-primary)] hover:bg-[var(--text-primary)] hover:text-[var(--bg-color)] transition-colors inline-block"
+                >
+                  [{log.link.label || (currentLang === 'zh' ? '执行' : 'EXECUTE')}]
+                </a>
+              )}
             </div>
           ))}
         </div>

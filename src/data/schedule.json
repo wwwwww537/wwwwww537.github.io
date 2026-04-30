@@ -1,20 +1,280 @@
 {
   "zh": {
-    "current_month": "2026.04",
     "events": [
-      { "date": "2026-04-05", "title": "项目里程碑 A", "type": "work", "desc": "MES 系统 V5 核心逻辑冻结" },
-      { "date": "2026-04-12", "title": "桌游局：阿瓦隆", "type": "play", "desc": "老地方，8人预约" },
-      { "date": "2026-04-20", "title": "Console 重构计划", "type": "work", "desc": "完成所有样式像素化及数据分离" },
-      { "date": "2026-04-25", "title": "技术分享会", "type": "meeting", "desc": "主题：Astro 实战经验总结" }
+      {
+        "id": "evt_001",
+        "date": "2025-07-08",
+        "time": "",
+        "title": "交互式医学图像分割项目正式启动",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "启动交互式医学图像分割项目的开发工作。",
+        "tags": ["Gradio", "Python"]
+      },
+      {
+        "id": "evt_002",
+        "date": "2025-11-04",
+        "time": "",
+        "title": "道路垃圾检测研究项目启动",
+        "type": "study",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "基于深度学习训练高精度模型，用于路边小型垃圾的自动化检测。",
+        "tags": ["Python", "深度学习"]
+      },
+      {
+        "id": "evt_003",
+        "date": "2025-12-02",
+        "time": "",
+        "title": "参加 ISBI 2026 Challenge 挑战赛",
+        "type": "study",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "参与国际医学图像分析领域的深度学习赛事。",
+        "tags": ["深度学习"],
+        "link": {
+          "url": "https://cxr-lt.github.io/CXR-LT-2026/",
+          "type": "external",
+          "label": "访问官网"
+        }
+      },
+      {
+        "id": "evt_004",
+        "date": "2025-12-25",
+        "time": "",
+        "title": "医学图像分割系统软件著作权登记",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "“快速灵活的交互式医学图像分割系统V1.0”成功获批软著登记。",
+        "tags": ["Gradio", "Python"],
+        "link": {
+          "url": "/zh/awards",
+          "type": "internal",
+          "label": "查看证书"
+        }
+      },
+      {
+        "id": "evt_005",
+        "date": "2026-01-05",
+        "time": "",
+        "title": "医学影像标注平台开发启动",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "针对手术视频数据开发的专业化医学标注工具。",
+        "tags": ["Html", "Web"]
+      },
+      {
+        "id": "evt_006",
+        "date": "2026-01-11",
+        "time": "13:00",
+        "title": "医学影像标注软件线下培训",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "面向目标用户开展软件操作流程与功能使用的线下培训。",
+        "tags": ["Html", "Web"]
+      },
+      {
+        "id": "evt_007",
+        "date": "2026-03-13",
+        "time": "",
+        "title": "实验室官网页面升级计划启动",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "启动实验室官方网站界面的视觉优化与交互体验升级工作。",
+        "tags": ["宁诺", "Web"]
+      },
+      {
+        "id": "evt_008",
+        "date": "2026-03-14",
+        "time": "",
+        "title": "道路垃圾检测研究论文正式发表",
+        "type": "study",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "关于路边小型垃圾检测的深度学习研究论文已被录用并公开。",
+        "tags": ["Python", "深度学习"],
+        "link": {
+          "url": "https://openaccess.thecvf.com/content/WACV2026W/WasteVision/html/Wu_RoLID-11K_A_Dashcam_Dataset_for_Small-Object_Roadside_Litter_Detection_WACVW_2026_paper.html",
+          "type": "external",
+          "label": "阅读论文"
+        }
+      },
+      {
+        "id": "evt_009",
+        "date": "2026-03-18",
+        "time": "",
+        "title": "实验室官网页面升级圆满完成",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "实验室官方网站页面优化及功能升级工作已全部完成并上线。",
+        "tags": ["宁诺", "Web"],
+        "link": {
+          "url": "https://cvip-unnc.github.io/cvip-lab/",
+          "type": "external",
+          "label": "访问官网"
+        }
+      },
+      {
+        "id": "evt_010",
+        "date": "2026-03-19",
+        "time": "13:00-17:00",
+        "title": "受邀参加“科创未来行”主题活动",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "深度研讨AI驱动增长的核心理念，共议企业智能化的新范式。",
+        "tags": ["AI Agent"],
+        "link": {
+          "url": "https://www.bilibili.com/video/BV1qAA5ztE37?buvid=XU6457963ECC3F9774429C971775A98C8F8A9&from_spmid=dt.space-dt.video.0&is_story_h5=false&mid=LMBnnZsIQeisRUrlolOJcQ%3D%3D&plat_id=116&share_from=ugc&share_medium=android&share_plat=android&share_session_id=5c73bbca-3639-4585-ac58-55927de8d089&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1774002007&unique_k=oBf5kv6&up_id=25484201",
+          "type": "external",
+          "label": "观看视频"
+        }
+      }
     ]
   },
   "en": {
-    "current_month": "2026.04",
     "events": [
-      { "date": "2026-04-05", "title": "Milestone A", "type": "work", "desc": "MES V5 core logic freeze" },
-      { "date": "2026-04-12", "title": "Boardgame: Avalon", "type": "play", "desc": "8 players, usual place" },
-      { "date": "2026-04-20", "title": "Console Refactor", "type": "work", "desc": "Complete pixel-style and data isolation" },
-      { "date": "2026-04-25", "title": "Tech Talk", "type": "meeting", "desc": "Topic: Astro best practices" }
+      {
+        "id": "evt_001",
+        "date": "2025-07-08",
+        "time": "",
+        "title": "Interactive Medical Image Segmentation Project Kick-off",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "Initiated the development of an interactive medical image segmentation project.",
+        "tags": ["Gradio", "Python"]
+      },
+      {
+        "id": "evt_002",
+        "date": "2025-11-04",
+        "time": "",
+        "title": "Roadside Litter Detection Research Project Initiation",
+        "type": "study",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "Training deep learning models for high-precision automated detection of small roadside litter.",
+        "tags": ["Python", "Deep Learning"]
+      },
+      {
+        "id": "evt_003",
+        "date": "2025-12-02",
+        "time": "",
+        "title": "Participation in ISBI 2026 Challenge",
+        "type": "study",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "Engaged in the deep learning competition for international medical image analysis.",
+        "tags": ["Deep Learning"],
+        "link": {
+          "url": "https://cxr-lt.github.io/CXR-LT-2026/",
+          "type": "external",
+          "label": "Visit Official Website"
+        }
+      },
+      {
+        "id": "evt_004",
+        "date": "2025-12-25",
+        "time": "",
+        "title": "Software Copyright Registration for Medical Image Segmentation",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "Successfully registered the software copyright for 'Fast and Flexible Interactive Medical Image Segmentation System V1.0'.",
+        "tags": ["Gradio", "Python"],
+        "link": {
+          "url": "/en/awards",
+          "type": "internal",
+          "label": "View Certificate"
+        }
+      },
+      {
+        "id": "evt_005",
+        "date": "2026-01-05",
+        "time": "",
+        "title": "Medical Imaging Annotation Platform Development Kick-off",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "Development of a professional medical annotation tool specifically for surgical video data.",
+        "tags": ["Html", "Web"]
+      },
+      {
+        "id": "evt_006",
+        "date": "2026-01-11",
+        "time": "13:00",
+        "title": "Offline Training Session for Medical Annotation Software",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "Conducted on-site training sessions for target users regarding software workflow and features.",
+        "tags": ["Html", "Web"]
+      },
+      {
+        "id": "evt_007",
+        "date": "2026-03-13",
+        "time": "",
+        "title": "Lab Official Website Redesign Plan Initiation",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "Launched the visual optimization and interactive upgrade for the lab's official website.",
+        "tags": ["UNNC", "Web"]
+      },
+      {
+        "id": "evt_008",
+        "date": "2026-03-14",
+        "time": "",
+        "title": "Publication of Roadside Litter Detection Research Paper",
+        "type": "study",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "The deep learning research paper regarding small roadside litter detection has been officially published.",
+        "tags": ["Python", "Deep Learning"],
+        "link": {
+          "url": "https://openaccess.thecvf.com/content/WACV2026W/WasteVision/html/Wu_RoLID-11K_A_Dashcam_Dataset_for_Small-Object_Roadside_Litter_Detection_WACVW_2026_paper.html",
+          "type": "external",
+          "label": "Read Paper"
+        }
+      },
+      {
+        "id": "evt_009",
+        "date": "2026-03-18",
+        "time": "",
+        "title": "Completion of Lab Official Website Upgrade",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "All page optimizations and functional upgrades for the official website have been successfully completed and launched.",
+        "tags": ["UNNC", "Web"],
+        "link": {
+          "url": "https://cvip-unnc.github.io/cvip-lab/",
+          "type": "external",
+          "label": "Visit Official Website"
+        }
+      },
+      {
+        "id": "evt_010",
+        "date": "2026-03-19",
+        "time": "13:00-17:00",
+        "title": "Participation in 'Tech-Innovation Future Tour' Event",
+        "type": "work",
+        "priority": "critical",
+        "status": "completed",
+        "desc": "In-depth exploration of AI-driven growth concepts and the intelligent paradigm for future enterprises.",
+        "tags": ["AI Agent"],
+        "link": {
+          "url": "https://www.bilibili.com/video/BV1qAA5ztE37?buvid=XU6457963ECC3F9774429C971775A98C8F8A9&from_spmid=dt.space-dt.video.0&is_story_h5=false&mid=LMBnnZsIQeisRUrlolOJcQ%3D%3D&plat_id=116&share_from=ugc&share_medium=android&share_plat=android&share_session_id=5c73bbca-3639-4585-ac58-55927de8d089&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1774002007&unique_k=oBf5kv6&up_id=25484201",
+          "type": "external",
+          "label": "Watch Video"
+        }
+      }
     ]
   }
 }
