@@ -135,6 +135,22 @@
           "type": "external",
           "label": "观看视频"
         }
+      },
+      {
+        "id": "evt_011",
+        "date": "2026-04-30",
+        "time": "",
+        "title": "实验室官网内容维护",
+        "type": "work",
+        "priority": "critical",
+        "status": "active",
+        "desc": "发布最新录用的学术论文、更新研究课题进展信息",
+        "tags": ["宁诺", "CVIP实验室"],
+        "link": {
+          "url": "https://cvip-unnc.github.io/cvip-lab/",
+          "type": "external",
+          "label": "访问官网"
+        }
       }
     ]
   },
@@ -273,6 +289,22 @@
           "url": "https://www.bilibili.com/video/BV1qAA5ztE37?buvid=XU6457963ECC3F9774429C971775A98C8F8A9&from_spmid=dt.space-dt.video.0&is_story_h5=false&mid=LMBnnZsIQeisRUrlolOJcQ%3D%3D&plat_id=116&share_from=ugc&share_medium=android&share_plat=android&share_session_id=5c73bbca-3639-4585-ac58-55927de8d089&share_source=WEIXIN&share_tag=s_i&spmid=united.player-video-detail.0.0&timestamp=1774002007&unique_k=oBf5kv6&up_id=25484201",
           "type": "external",
           "label": "Watch Video"
+        }
+      },
+      {
+        "id": "evt_011",
+        "date": "2026-04-30",
+        "time": "",
+        "title": "Lab Website Content Maintenance",
+        "type": "work",
+        "priority": "critical",
+        "status": "active",
+        "desc": "Uploading newly accepted research papers, updating project milestones.",
+        "tags": ["UNNC", "CVIP Lab"],
+        "link": {
+          "url": "https://cvip-unnc.github.io/cvip-lab/",
+          "type": "external",
+          "label": "Visit Website"
         }
       }
     ]
