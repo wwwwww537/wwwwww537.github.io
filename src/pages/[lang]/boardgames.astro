@@ -1,6 +1,8 @@
 ---
+import { useTranslations } from '../../i18n/utils';
 import Layout from '../../layouts/Layout.astro';
 import bgData from '../../data/boardgames.json';
+import Ltq from '../../components/3dltq_3.astro';
 import '../../styles/boardgames.css';
 
 export function getStaticPaths() {
@@ -8,95 +10,199 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
-const games = bgData[lang === 'en' ? 'en' : 'zh'];
+const currentLang = (lang === 'en' ? 'en' : 'zh') as 'zh' | 'en';
+const games = bgData[currentLang];
+const t = useTranslations(currentLang); 
 ---
 
-<Layout title="Physical Storage - Jules Console" lang={lang as 'zh' | 'en'}>
-  <div class="jules-container max-w-7xl mx-auto pt-6 pb-20 px-4 cabinet-system">
+<Layout title={t('nav.boardgames')} lang={currentLang}>
+  <Ltq/>
+  <div class="calendar-bg jules-container max-w-6xl mx-auto pt-6 pb-40 px-4 w-full">
     
     <header class="mb-12">
-        <div class="flex justify-between items-end mb-8">
-            <div class="terminal-loader loading">
-                <p>> INITIALIZING_PHYSICAL_CABINET_V4...</p>
-                <p>> CALIBRATING_DEPTH_SENSORS...</p>
-                <p>> ASSET_VISUALIZATION: 3D_READY</p>
-            </div>
-        </div>
-        <h1 class="text-4xl font-bold font-pixel uppercase tracking-widest">
-            {lang === 'zh' ? '物理资产陈列柜' : 'PHYSICAL_ASSET_CABINET'}
-        </h1>
+      <div class="flex justify-between items-end mb-8">
+          <div class="terminal-loader loading font-mono text-sm">
+              <p>> INITIALIZING_PHYSICAL_CABINET_V5...</p>
+              <p>> LOADING_GRID_INTERFACE...</p>
+              <p>> ASSET_VISUALIZATION: 3D_CUBE_READY</p>
+          </div>
+      </div>
+      <h1 class="text-4xl font-bold font-pixel text-[var(--text-primary)]">
+        {t('nav.boardgames')}
+      </h1>
     </header>
 
-    <!-- 正在施工中 横幅 -->
     <div class="border-2 border-dashed border-yellow-500 bg-yellow-500/10 text-yellow-500 p-4 mb-10 font-pixel animate-pulse flex items-center justify-center gap-4">
         <span>⚠️</span>
         <p>{lang === 'zh' ? 'SYSTEM_WARNING: 模块正在施工中 (UNDER CONSTRUCTION)...' : 'SYSTEM_WARNING: MODULE UNDER CONSTRUCTION...'}</p>
         <span>⚠️</span>
     </div>
 
-    <div class="flex gap-4 mb-10 font-pixel text-xs">
-      <button class="jules-btn px-4 py-1 active">[ ALL ]</button>
-      <button class="jules-btn px-4 py-1">[ IN_STOCK ]</button>
-      <button class="jules-btn px-4 py-1 text-red-500">[ LENT_OUT ]</button>
+    <div>
+        <div class="flex flex-wrap gap-4 mb-10 items-center justify-between font-pixel relative z-10">
+          <div class="flex gap-4 text-xs" id="filter-group">
+            <button class="jules-btn filter-btn px-4 py-1 active" data-filter="all">[ ALL ]</button>
+            <button class="jules-btn filter-btn px-4 py-1" data-filter="in_stock">[ IN_STOCK ]</button>
+            <button class="jules-btn filter-btn px-4 py-1 text-red-500" data-filter="lent_out">[ LENT_OUT ]</button>
+          </div>
+          
+          <div class="relative">
+             <span class="absolute left-2 top-1/2 -translate-y-1/2 text-[var(--accent-color)]">></span>
+             <input type="text" id="searchInput" placeholder="SEARCH_ASSETS..." class="bg-black/50 border border-[var(--accent-color)] text-[var(--text-primary)] pl-6 pr-3 py-1 font-mono text-sm focus:outline-none focus:ring-1 focus:ring-[var(--accent-color)] w-64 transition-all" />
+          </div>
+        </div>
+
+        <div class="calendar-wrap js relative w-full" style="min-height: 85vh;">
+          <div class="calendar" id="games-grid">
+              {games.map(game => (
+                  <div class="cube" 
+                      data-bg-color={game.color} 
+                      data-title={game.name} 
+                      data-name={game.name} 
+                      data-cover={game.cover}
+                      data-players={game.players}
+                      data-playtime={game.playtime}
+                      data-status={game.status || 'in_stock'}
+                      data-desc={game.desc || ''}>
+                  </div>
+              ))}
+          </div>
+
+          <div class="content">
+              {games.map(game => (
+                  <div class="content__block w-full">
+                      <div class="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto w-full items-center md:items-start pt-10">
+                          
+                          <div class="content__cover w-full md:w-[40%] aspect-square bg-cover bg-center border-2 border-[var(--accent-color)] shadow-[0_0_20px_rgba(88,199,250,0.3)]" style={`background-image: url('${game.cover}')`}></div>
+                          
+                          <div class="w-full md:w-[60%] text-left flex flex-col gap-4 font-mono">
+                              
+                              <h3 class="content__title text-3xl md:text-5xl font-bold font-pixel text-[var(--text-primary)] m-0 drop-shadow-md">{game.name || 'SYSTEM_ASSET'}</h3>
+                              
+                              <div class="content__meta grid grid-cols-2 gap-3 text-sm text-gray-300 bg-black/60 p-4 border border-gray-700 backdrop-blur-sm w-full">
+                              <p><span class="text-gray-500">PLYRS:</span> <span class="font-bold text-white">{game.players || 'N/A'}</span></p>
+                              <p><span class="text-gray-500">TIME:</span> <span class="font-bold text-white">{game.playtime || 'N/A'}</span></p>
+                              <p><span class="text-gray-500">WGHT:</span> <span class="text-yellow-400 font-bold">{game.weight || 'N/A'}</span></p>
+                              <p><span class="text-gray-500">STAT:</span> <span class={game.status === 'in_stock' ? 'text-green-400 font-bold' : 'text-red-500 font-bold'}>{game.status === 'in_stock' ? '[ IN_STOCK ]' : '[ LENT_OUT ]'}</span></p>
+                              <p class="col-span-2 text-xs mt-1 border-t border-dashed border-gray-700 pt-2"><span class="text-gray-500">TAGS:</span> <span>{game.tags ? game.tags.join(', ') : 'N/A'}</span></p>
+                              </div>
+
+                              <div class="content__description text-sm leading-relaxed text-gray-400 bg-black/40 p-4 border border-gray-800 w-full">
+                              <span class="text-[var(--accent-color)] block mb-2 font-bold">> SYSTEM_DESC_LOG:</span>
+                              <p>{game.desc || 'NO_DATA_FOUND'}</p>
+                              
+                              <div class="mt-6 pt-4 border-t border-gray-800">
+                                  {game.url ? 
+                                      <a href={game.url} target="_blank" class="text-[var(--accent-color)] hover:text-white transition-colors underline decoration-dashed underline-offset-4">> INITIALIZE_EXTERNAL_LINK</a> : 
+                                      <span class="text-gray-600">> NO_EXTERNAL_LINK_DETECTED</span>
+                                  }
+                              </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              ))}
+          <div class="content__number">0</div>
+          <button class="btn-back" aria-label="Back to the grid view">&crarr;</button>
+          </div>
+      </div>
     </div>
-
-    <div class="cabinet-wall">
-      {games.map(game => (
-        <div class="shelf-unit">
-            <div class="game-box-3d" onclick={`openGameDialog(${JSON.stringify(game)})`}>
-                <div class="box-face-front" style={`background-image: url('${game.cover || ''}')`}>
-                    {game.status === 'LENT_OUT' && (
-                        <div class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-1 rotate-12 z-50 border border-white font-pixel">
-                            LENT_TO: {game.lentTo}
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-      ))}
-    </div>
-
-    <!-- 将 Dialog 移出循环，作为全局共用的唯一弹窗 -->
-    <dialog id="game-modal" class="jules-card p-6 backdrop:bg-black/80 bg-[var(--bg-color)] text-[var(--text-primary)] w-11/12 max-w-md">
-        <div class="flex justify-between items-center border-b border-dashed mb-4 pb-2">
-            <h2 id="modal-title" class="font-pixel text-xl"></h2>
-            <button onclick="document.getElementById('game-modal').close()" class="jules-btn px-2 py-1 hover:text-red-500 cursor-pointer">X</button>
-        </div>
-        <div class="space-y-4 font-mono">
-            <p><strong>{lang === 'zh' ? '玩家人数' : 'Players'}:</strong> <span id="modal-players"></span></p>
-            <p><strong>{lang === 'zh' ? '游戏时间' : 'Playtime'}:</strong> <span id="modal-time"></span></p>
-            <p><strong>{lang === 'zh' ? '状态' : 'Status'}:</strong> <span id="modal-status"></span></p>
-            <div id="modal-links" class="mt-4 pt-4 border-t border-dashed"></div>
-        </div>
-    </dialog>
-
   </div>
 
-  <script is:inline>
-    function openGameDialog(game) {
-        document.getElementById('modal-title').innerText = game.name;
-        document.getElementById('modal-players').innerText = game.players;
-        document.getElementById('modal-time').innerText = game.playtime;
-        document.getElementById('modal-status').innerText = game.status;
-        
-        const linksDiv = document.getElementById('modal-links');
-        linksDiv.innerHTML = game.url ? `<a href="${game.url}" target="_blank" class="text-[var(--accent-color)] hover:underline">[ 查看规则/BGG外链 ]</a>` : '';
-        
-        document.getElementById('game-modal').showModal();
-    }
-  </script>
+  <script is:inline defer src="/3dltq/autoload.js"></script>
 
-  <script>
+  <script is:inline>
+    // 纯粹的筛选逻辑，直接操作 main.js 生成好的 3D 方块
     document.addEventListener('astro:page-load', () => {
-      const loaders = document.querySelectorAll('.terminal-loader');
-      
-      loaders.forEach(loader => {
-        loader.classList.remove('active');
-        
-        void (loader as HTMLElement).offsetWidth; 
-        
-        loader.classList.add('active');
-      });
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        function applyFilters() {
+            if (!searchInput) return;
+            const term = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            
+            // 抓取在 main.js 中被我们贴上 'filterable-cube' 标签的新方块
+            const cubes = document.querySelectorAll('.filterable-cube');
+
+            cubes.forEach((cube) => {
+                const title = (cube.dataset.title || '').toLowerCase();
+                const desc = (cube.dataset.desc || '').toLowerCase();
+                const status = cube.dataset.status || 'in_stock';
+
+                const matchesSearch = title.includes(term) || desc.includes(term);
+                const matchesFilter = activeFilter === 'all' || status === activeFilter;
+
+                if (matchesSearch && matchesFilter) {
+                    cube.style.display = '';
+                    // 强制触发重绘，修复 Flex 布局下突然显示导致的动画卡顿
+                    cube.style.opacity = '1'; 
+                    cube.style.pointerEvents = 'auto';
+                } else {
+                    cube.style.display = 'none';
+                    cube.style.opacity = '0';
+                    cube.style.pointerEvents = 'none';
+                }
+            });
+        }
+
+        if (searchInput) searchInput.addEventListener('input', applyFilters);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filterBtns.forEach(b => b.classList.remove('active', 'text-yellow-400'));
+                e.target.classList.add('active');
+                if(e.target.dataset.filter === 'all') e.target.classList.add('text-yellow-400');
+                applyFilters();
+            });
+        });
     });
   </script>
+
+  <style is:global>
+    /* 强行撑开绝对定位的副作用 */
+    .calendar-wrap {
+        position: relative !important;
+    }
+    
+    /* 消除原版样式对标题和描述的强制居中，适配现在的左右布局 */
+    .js .content__block {
+        padding-top: 5vh !important;
+        align-items: flex-start !important;
+    }
+    
+    /* 强制重写详情激活状态，避免被 Tailwind 的预设覆盖 */
+    .js .content__block--current {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        z-index: 999 !important;
+    }
+
+    /* 优化原版线条和排版间距 */
+    .content__meta::before {
+        content: none !important;
+    }
+    .content__meta, .content__description {
+        font-family: inherit !important;
+        padding: 1rem !important;
+        margin: 0 !important;
+        width: 100% !important;
+        opacity: 0; /* 配合 anime.js 的从 0 到 1 渐显 */
+    }
+    .content__description {
+        font-size: 0.875rem !important; 
+    }
+
+    /* 加上封面的丝滑渐显动画，不让它突兀出现 */
+    .content__cover {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease-out 0.6s, transform 0.8s ease-out 0.6s;
+    }
+    .content__block--current .content__cover {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
 </Layout>

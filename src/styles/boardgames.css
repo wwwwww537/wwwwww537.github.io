@@ -1,9 +1,4 @@
 /* --- 全局 3D 环境 --- */
-.cabinet-system {
-  perspective: 2000px;
-  padding-bottom: 5rem;
-}
-
 .terminal-loader p {
   width: 0;
   overflow: hidden;
@@ -46,108 +41,33 @@
 @keyframes hide-cursor {
   to { border-right-color: transparent; border-right-width: 0; }
 }
-/* --- 3D 实体柜体 (Cabinet) --- */
-.cabinet-wall {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0; /* 必须为0以连接层板 */
-  border: 12px solid var(--text-primary);
-  background: var(--surface-color);
-  box-shadow: 20px 20px 0 0 var(--jules-shadow-color);
+
+/* 模态框动画基础状态：隐藏并缩小 */
+dialog#game-modal {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease-out;
+    transform: scale(0.1);
+    opacity: 0;
 }
 
-/* --- 实体层板 (The Shelf Ledge) --- */
-.shelf-unit {
-  position: relative;
-  height: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end; /* 盒子立在层板上 */
-  padding-bottom: 24px; /* 给层板厚度留空间 */
-  border-bottom: 24px solid var(--text-primary); /* 层板正面 */
-  /* 层板顶部的深度感（厚度表面） */
-  background: linear-gradient(to top, rgba(0,0,0,0.1) 0px, transparent 24px);
+/* 模态框展开状态 */
+dialog#game-modal.dialog-open {
+    transform: scale(1);
+    opacity: 1;
 }
 
-/* 层板的“顶面”视角 */
-.shelf-unit::before {
-  content: '';
-  position: absolute;
-  bottom: -24px; left: 0; right: 0;
-  height: 24px;
-  background: var(--text-primary);
-  opacity: 0.8;
-  transform: rotateX(60deg);
-  transform-origin: top;
+/* 隐藏原生 dialog 原本粗糙的边框 */
+dialog#game-modal::backdrop {
+    background: transparent; /* 背景色在 Tailwind 的 class 中用 backdrop:bg-black/80 控制了 */
 }
 
-/* --- 3D 实体桌游盒 (The 3D Box) --- */
-.game-box-3d {
-  width: 160px;
-  height: 240px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  cursor: pointer;
+/* 优化描述框里的滚动条外观 (Cyber 风) */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
 }
-
-/* 盒子正面 */
-.box-face-front {
-  position: absolute;
-  inset: 0;
-  background: var(--surface-color);
-  border: 4px solid var(--text-primary);
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
 }
-
-/* 盒子的“厚度”侧边 (右侧) */
-.box-face-side {
-  position: absolute;
-  top: 4px; right: -12px; bottom: 4px;
-  width: 12px;
-  background: var(--text-primary);
-  transform: skewY(-45deg);
-  transform-origin: left;
-  opacity: 0.9;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--accent-color, #58c7fa);
+    border-radius: 3px;
 }
-
-/* 盒子的“厚度”顶边 */
-.box-face-top {
-  position: absolute;
-  top: -12px; left: 4px; right: -8px;
-  height: 12px;
-  background: var(--text-primary);
-  transform: skewX(-45deg);
-  transform-origin: bottom;
-  opacity: 0.8;
-}
-
-/* 悬浮效果：盒子被“抽出来” */
-.game-box-3d:hover {
-  transform: translateZ(50px) translateY(-20px) rotateY(-5deg);
-}
-
-/* 悬浮时显示浮动屏 */
-.box-info-overlay {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: var(--text-primary);
-  color: var(--bg-color);
-  padding: 1rem;
-  opacity: 0;
-  transform: translateZ(1px);
-  transition: opacity 0.3s;
-  pointer-events: none;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-}
-
-.game-box-3d:hover .box-info-overlay {
-  opacity: 1;
-}
-
